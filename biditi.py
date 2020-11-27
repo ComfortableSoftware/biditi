@@ -16,15 +16,17 @@ STARTCOL = GRN
 
 
 BTNSTART = {
+	"button_color":("#114422", "#226600"),
+	}
+
+BTNSTARTSTOP = {
 	"focus":True,
 	"font":("Source Code Pro", 12),
 	"button_color":("#114422", "#000000"),
 	}
 
 BTNSTOP = {
-	"focus":True,
-	"font":("Source Code Pro", 12),
-	"button_color":("#441122", "#000000"),
+	"button_color":("#441122", "#662200"),
 	}
 
 BTNRESTART = {
@@ -42,8 +44,7 @@ BTNQUIT = {
 BTNTASK = {
 	"focus":True,
 	"font":('Source Code Pro', 8),
-	"button_color":(TASKCOL, "#FF0000"),
-	"background_color":"#441122"
+	"button_color":("#CC22AA", "#660055"),
 	}
 
 
@@ -60,15 +61,16 @@ layout = [
 	],
 	[
 		sg.Text(' ' * 5),
-		sg.Button('Start/Stop', **BTNSTART),
+		sg.Button('Start/Stop', **BTNSTARTSTOP),
 		sg.Button('Restart', **BTNRESTART),
 		sg.Button('Quit', **BTNQUIT),
 		sg.Checkbox('cycle', font=('Source Code Pro', 12), default=CYCLE),
-		sg.Button("task1+", BTNTASK),
-		sg.Button("task2+", BTNTASK),
-		sg.Button("task3+", BTNTASK),
-		sg.Button("task4+", BTNTASK),
-		sg.Button('zeroStuff', focus=True, font=('Source Code Pro', 8)),
+		sg.Text(" " * 12),
+		sg.Button("task1+", **BTNTASK),
+		sg.Button("task2+", **BTNTASK),
+		sg.Button("task3+", **BTNTASK),
+		sg.Button("task4+", **BTNTASK),
+		sg.Button('zeroStuff', focus=True, font=('Source Code Pro', 6)),
 	],
 	[
 		sg.Text('up min', size=(8, 1), font=('Source Code Pro', 20)),
@@ -86,6 +88,7 @@ layout = [
 
 
 window = sg.Window('biditi', layout).finalize()
+sg.SetOptions(element_padding=(0,0))
 
 
 cycle = CYCLE
@@ -112,6 +115,14 @@ def updateWindowBackground(COLOR):
 	window.Element('_timer_').Update(background_color=COLOR)
 
 
+def doStartButton():
+	window.find_element("Start/Stop").Update(**BTNSTART)
+
+
+def doStopButton():
+	window.find_element("Start/Stop").Update(**BTNSTOP)
+
+
 def updateTime():
 	# update timer and cycleCount
 	window.Element('_timer_').Update(value=('{:02d}:{:02d}'.format(ticks // myFactor // 60, ticks // myFactor % 60)))
@@ -135,29 +146,29 @@ def doLabels():
 	TLabel = "TIMER\n"
 
 	TLabel += "|" + " " * label2pos
-	TLabel += "cycle counter (start clears)\n"
+	TLabel += "cycle counter, start and zeroStuff clears, counts all finished cycles\n"
 
 	TLabel += "|" + " " * label2pos
 	TLabel += "|" + " " * label3pos
-	TLabel += "(re)start counter\n"
+	TLabel += "(re)start counter, zeroStuff clears, counts the number of times start or restart are clicked\n"
 
 	TLabel += "|" + " " * label2pos
 	TLabel += "|" + " " * label3pos
 	TLabel += "|" + " " * label4pos
-	TLabel += "task 1 counter\n"
+	TLabel += "task 1 counter, zeroStuff clears\n"
 
 	TLabel += "|" + " " * label2pos
 	TLabel += "|" + " " * label3pos
 	TLabel += "|" + " " * label4pos
 	TLabel += "|" + " " * label5pos
-	TLabel += "task 2 counter\n"
+	TLabel += "task 2 counter, zeroStuff clears\n"
 
 	TLabel += "|" + " " * label2pos
 	TLabel += "|" + " " * label3pos
 	TLabel += "|" + " " * label4pos
 	TLabel += "|" + " " * label5pos
 	TLabel += "|" + " " * label6pos
-	TLabel += "task 3 counter\n"
+	TLabel += "task 3 counter, zeroStuff clears\n"
 
 	TLabel += "|" + " " * label2pos
 	TLabel += "|" + " " * label3pos
@@ -165,7 +176,7 @@ def doLabels():
 	TLabel += "|" + " " * label5pos
 	TLabel += "|" + " " * label6pos
 	TLabel += "|" + " " * label7pos
-	TLabel += "task 4 counter\n"
+	TLabel += "task 4 counter, zeroStuff clears\n"
 	# print(TLabel)
 	TLabel1 = f"""timer
 |           cycle counter
@@ -191,6 +202,7 @@ def zeroStuff(modeIn):
 		task2count = 0
 		task3count = 0
 		task4count = 0
+		updateTime()
 	elif modeIn == MODE_RESTART or modeIn == MODE_START:
 		startCount += 1
 	elif modeIn == MODE_START:
@@ -209,11 +221,12 @@ while True:  # Event Loop
 		break
 	elif event == 'Start/Stop':
 		timer_running = (not timer_running)
-		print(timer_running)
 		if timer_running:
 			zeroStuff(MODE_START)
+			doStartButton()
 		else:
 			updateWindowBackground('Black')
+			doStopButton()
 	elif event == 'Restart':
 		zeroStuff(MODE_RESTART)
 		timer_running = True
@@ -221,10 +234,23 @@ while True:  # Event Loop
 		zeroStuff(MODE_NORMAL)
 		updateWindowBackground('Black')
 		timer_running = False
+	elif event == "task1+":
+		task1count += 1
+		updateTime()
+	elif event == "task2+":
+		task2count += 1
+		updateTime()
+	elif event == "task3+":
+		task3count += 1
+		updateTime()
+	elif event == "task4+":
+		task4count += 1
+		updateTime()
 	cycle = values[0]  # cycle up and down until stopped checkbox
 	upTicks = int((values[1] * 60 + values[2]) * myFactor)
 	downTicks = int((values[3] * 60 + values[4]) * myFactor)
 	if timer_running:
+		doStopButton()
 		if directionUp:
 			ticks += 1
 		else:
@@ -246,3 +272,5 @@ while True:  # Event Loop
 				updateWindowBackground('Green')
 				directionUp = True
 				ticks = 0
+	else:
+		doStartButton()
