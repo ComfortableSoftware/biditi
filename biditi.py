@@ -9,9 +9,9 @@ import PySimpleGUI as SG
 
 CWD = PATH.abspath(".")
 if CWD.find("_DEV") > -1:
-	SG.ChangeLookAndFeel("DarkPurple2")
+	SG.ChangeLookAndFeel("DarkGreen5")
 else:
-	SG.ChangeLookAndFeel("Reds")
+	SG.ChangeLookAndFeel("DarkPurple6")
 
 
 BTNDEFAULTTXTCOLOR = "#444444"
@@ -21,12 +21,13 @@ BTNRESETCOLOR = "#992233"
 BTNSTARTCOLOR = "#116611"
 BTNSTOPCOLOR = "#662200"
 BTNTASKCOLOR = "#33CC88"
-BTNTASKDNCOLOR = "#CC3322"
+BTNTASKDOWNCOLOR = "#CC3322"
 BTNZEROCOLOR = "#AA2233"
 COUNTERFONTSZ = 20
 CYCLECOUNTERCOLOR = "#773322"
 GRN = "#44CC33"
 LABELFONTSZ = 8
+LASTFILENAME = "biditi.last"
 MODE_NORMAL = "MODE_NORMAL"
 MODE_RESTART = "MODE_RESTART"
 MODE_START = "MODE_START"
@@ -65,6 +66,17 @@ UPMIN = "UPMIN"
 UPSEC = "UPSEC"
 
 
+VALDXCYCLE = 0
+VALDXAUTOGO1 = 1
+VALDXAUTOGO2 = 2
+VALDXAUTOGO3 = 3
+VALDXAUTOGO4 = 4
+VALDXUPMIN = 5
+VALDXUPSEC = 6
+VALDXDOWNMIN = 7
+VALDXDOWNSEC = 8
+
+
 DEFAULTS = [
 	(AUTOGO1, True,),
 	(AUTOGO2, False,),
@@ -74,7 +86,7 @@ DEFAULTS = [
 	(DOWNMIN, 0,),
 	(DOWNSEC, 7,),
 	(EVENTS, [],),
-	(FILENAME, "bitidi.pkl",),
+	(FILENAME, "biditi.pkl",),
 	(STARTCOUNT, 0,),
 	(TASK1COUNT, 0,),
 	(TASK2COUNT, 0,),
@@ -101,6 +113,48 @@ myFactor = MYFACTOR
 myScale = MYSCALE
 ticks = 0
 timerRunning = False
+
+
+def pickleIt(fileName, dataToPickle):
+	print(f"filename is {fileName}")
+	with open(fileName, 'wb') as FD_OUT_:
+		PD.dump(dataToPickle, FD_OUT_)
+		FD_OUT_.flush()
+		FD_OUT_.close()
+	with open(LASTFILENAME, "tw") as FD_OUT_:
+		FD_OUT_.writelines(fileName + "\n")
+		FD_OUT_.flush()
+		FD_OUT_.close()
+
+
+def unPickleIt(fileName):
+	with open(fileName, "rb") as FD_IN_:
+		dataToRTN_ = PD.load(FD_IN_)
+	return dataToRTN_
+
+
+def getData(fileName):
+	# fold here ⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱
+	global currentData
+	if PATH.exists(fileName):
+		currentData = unPickleIt(fileName)
+	else:
+		currentData = defaults()
+		pickleIt(fileName, currentData)
+	# fold here ⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰
+
+
+def myInit():
+	if PATH.exists(LASTFILENAME):
+		print(f"lastfilename {LASTFILENAME} being opened\n")
+		with open(LASTFILENAME, "tr") as FD_IN_:
+			filename = FD_IN_.readline()
+		getData(filename)
+	else:
+		pickleIt(LASTFILENAME, currentData)
+
+
+myInit()
 
 
 BTNSTART = {
@@ -141,10 +195,10 @@ BTNTASK = {
 	"button_color": (BTNDEFAULTTXTCOLOR, BTNTASKCOLOR),
 }
 
-BTNTASKDN = {
+BTNTASKDOWN = {
 	"focus": True,
 	"font": ("Source Code Pro", BTNFONTSZ),
-	"button_color": (BTNDEFAULTTXTCOLOR, BTNTASKDNCOLOR),
+	"button_color": (BTNDEFAULTTXTCOLOR, BTNTASKDOWNCOLOR),
 }
 
 BTNZEROSTUFF = {
@@ -206,7 +260,7 @@ TASK1COLUMN = [
 		SG.Button("task1+", **BTNTASK),
 	],
 	[
-		SG.Button("task1-", **BTNTASKDN),
+		SG.Button("task1-", **BTNTASKDOWN),
 	],
 	[
 		SG.Checkbox("autogo1", font=("Source Code Pro", SPACEFONTSZ), default=currentData[AUTOGO1]),
@@ -221,7 +275,7 @@ TASK2COLUMN = [
 		SG.Button("task2+", **BTNTASK),
 	],
 	[
-		SG.Button("task2-", **BTNTASKDN),
+		SG.Button("task2-", **BTNTASKDOWN),
 	],
 	[
 		SG.Checkbox("autogo2", font=("Source Code Pro", SPACEFONTSZ), default=currentData[AUTOGO2]),
@@ -236,7 +290,7 @@ TASK3COLUMN = [
 		SG.Button("task3+", **BTNTASK),
 	],
 	[
-		SG.Button("task3-", **BTNTASKDN),
+		SG.Button("task3-", **BTNTASKDOWN),
 	],
 	[
 		SG.Checkbox("autogo3", font=("Source Code Pro", SPACEFONTSZ), default=currentData[AUTOGO3]),
@@ -251,7 +305,7 @@ TASK4COLUMN = [
 		SG.Button("task4+", **BTNTASK),
 	],
 	[
-		SG.Button("task4-", **BTNTASKDN),
+		SG.Button("task4-", **BTNTASKDOWN),
 	],
 	[
 		SG.Checkbox("autogo4", font=("Source Code Pro", SPACEFONTSZ), default=currentData[AUTOGO4]),
@@ -359,31 +413,6 @@ def stopTimer(stopMode):
 	updateTime()
 
 
-def pickleIt(fileName, dataToPickle):
-	with open(fileName, 'wb') as FD_OUT_:
-		PD.dump(dataToPickle, FD_OUT_)
-		FD_OUT_.flush()
-		FD_OUT_.close()
-
-
-def unPickleIt(fileName):
-	with open(fileName, "rb") as FD_IN_:
-		dataToRTN_ = PD.load(FD_IN_)
-	return dataToRTN_
-
-
-def getData(fileName):
-	# fold here ⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱
-	global currentData
-	fileExists = PATH.exists(fileName)
-	if fileExists:
-		currentData = unPickleIt(fileName)
-	else:
-		currentData = defaults()
-		pickleIt(fileName, currentData)
-	# fold here ⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰
-
-
 def addEvent(event2add):
 	# fold here ⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱
 	global currentData
@@ -408,6 +437,9 @@ updateTime()
 while True:  # Event Loop
 	event, values = window.Read(timeout=myScale)  # use as high of a timeout value as you can
 	if event is None or event == "Quit":  # X or quit button clicked
+		addEvent(event)
+		stopTimer(STOPMODE_BUTTON)
+		pickleIt(currentData[FILENAME], currentData)
 		break
 	elif event == "Start/Stop":
 		# fold here ⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥
@@ -496,13 +528,18 @@ while True:  # Event Loop
 
 		# fold here ⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣
 
-	currentData[CYCLE] = values[0]  # cycle up and down until stopped checkbox
-	upTicks = int((values[5] * 60 + values[6]) * myFactor)
-	downTicks = int((values[7] * 60 + values[8]) * myFactor)
-	currentData[AUTOGO1] = values[1]
-	currentData[AUTOGO2] = values[2]
-	currentData[AUTOGO3] = values[3]
-	currentData[AUTOGO4] = values[4]
+	currentData[AUTOGO1] = values[VALDXAUTOGO1]
+	currentData[AUTOGO2] = values[VALDXAUTOGO2]
+	currentData[AUTOGO3] = values[VALDXAUTOGO3]
+	currentData[AUTOGO4] = values[VALDXAUTOGO4]
+	currentData[CYCLE] = values[VALDXCYCLE]  # cycle up and down until stopped checkbox
+	currentData[DOWNMIN] = values[VALDXDOWNMIN]
+	currentData[DOWNSEC] = values[VALDXDOWNSEC]
+	currentData[UPMIN] = values[VALDXUPMIN]
+	currentData[UPSEC] = values[VALDXUPSEC]
+
+	upTicks = int((values[VALDXUPMIN] * 60 + values[VALDXUPSEC]) * myFactor)
+	downTicks = int((values[VALDXDOWNMIN] * 60 + values[VALDXDOWNSEC]) * myFactor)
 
 	if event != "__TIMEOUT__":
 		addEvent(event)
