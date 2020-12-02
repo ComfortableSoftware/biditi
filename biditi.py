@@ -9,12 +9,12 @@ import PySimpleGUI as SG
 
 CWD = PATH.abspath(".")
 if CWD.find("_DEV") > -1:
-	SG.ChangeLookAndFeel("DarkGreen5")
+	SG.ChangeLookAndFeel("DarkGreen1")
 else:
 	SG.ChangeLookAndFeel("DarkPurple6")
 
 
-BTNDEFAULTTXTCOLOR = "#444444"
+BTNDEFAULTTXTCOLOR = "#550044"
 BTNFONTSZ = 9
 BTNQUITCOLOR = "#992222"
 BTNRESETCOLOR = "#992233"
@@ -34,14 +34,14 @@ MODE_START = "MODE_START"
 MYFACTOR = 10
 MYSCALE = 100
 PNK = "#FF2266"
-SPACECOLOR = "#888888"
+SPACECOLOR = "#444444"
 SPACEFONTSZ = 9
-STARTCOL = "#44CC33"
+STARTCOLOR = "#44CC33"
 STARTSTOPBTNTXTCOLOR = "#118822"
 STOPMODE_BUTTON = "STOPMODE_BUTTON"
 STOPMODE_CYCLE = "STOPMODE_CYCLE"
 TASKCOUNTERCOLOR = "#448811"
-TIMERCOL = "#2F0004"
+TIMERCOLOR = "#2F0004"
 TIMERFONTSZ = 70
 
 
@@ -66,15 +66,15 @@ UPMIN = "UPMIN"
 UPSEC = "UPSEC"
 
 
-VALDXCYCLE = 0
-VALDXAUTOGO1 = 1
-VALDXAUTOGO2 = 2
-VALDXAUTOGO3 = 3
-VALDXAUTOGO4 = 4
-VALDXUPMIN = 5
-VALDXUPSEC = 6
-VALDXDOWNMIN = 7
-VALDXDOWNSEC = 8
+VALNDXCYCLE = 0
+VALNDXAUTOGO1 = 1
+VALNDXAUTOGO2 = 2
+VALNDXAUTOGO3 = 3
+VALNDXAUTOGO4 = 4
+VALNDXUPMIN = 5
+VALNDXUPSEC = 6
+VALNDXDOWNMIN = 7
+VALNDXDOWNSEC = 8
 
 
 DEFAULTS = [
@@ -122,7 +122,7 @@ def pickleIt(fileName, dataToPickle):
 		FD_OUT_.flush()
 		FD_OUT_.close()
 	with open(LASTFILENAME, "tw") as FD_OUT_:
-		FD_OUT_.writelines(fileName + "\n")
+		FD_OUT_.writelines(fileName)
 		FD_OUT_.flush()
 		FD_OUT_.close()
 
@@ -245,7 +245,7 @@ SPACE4 = {
 
 STARTSCOLUMN = [
 	[
-		SG.Text("(re)starts", size=(4, 1), text_color=STARTCOL, font=("Source Code Pro", COUNTERFONTSZ), justification="center", key="_startCount_"),
+		SG.Text("(re)starts", size=(4, 1), text_color=STARTCOLOR, font=("Source Code Pro", COUNTERFONTSZ), justification="center", key="_startCount_"),
 	],
 	[
 		SG.Text("starts", text_color=STARTSTOPBTNTXTCOLOR, font=("Source Code Pro", SPACEFONTSZ))
@@ -313,7 +313,7 @@ TASK4COLUMN = [
 ]
 
 TIMERCOLUMN = [
-	[SG.Text("timer", size=(5, 1), text_color=TIMERCOL, font=("Source Code Pro", TIMERFONTSZ), justification="center", key="_timer_")],
+	[SG.Text("timer", size=(5, 1), text_color=TIMERCOLOR, font=("Source Code Pro", TIMERFONTSZ), justification="center", key="_timer_")],
 	[
 		SG.Button("Start/Stop", **BTNSTARTSTOP),
 		SG.Button("Restart", **BTNRESTART),
@@ -528,18 +528,18 @@ while True:  # Event Loop
 
 		# fold here ⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣
 
-	currentData[AUTOGO1] = values[VALDXAUTOGO1]
-	currentData[AUTOGO2] = values[VALDXAUTOGO2]
-	currentData[AUTOGO3] = values[VALDXAUTOGO3]
-	currentData[AUTOGO4] = values[VALDXAUTOGO4]
-	currentData[CYCLE] = values[VALDXCYCLE]  # cycle up and down until stopped checkbox
-	currentData[DOWNMIN] = values[VALDXDOWNMIN]
-	currentData[DOWNSEC] = values[VALDXDOWNSEC]
-	currentData[UPMIN] = values[VALDXUPMIN]
-	currentData[UPSEC] = values[VALDXUPSEC]
+	currentData[AUTOGO1] = values[VALNDXAUTOGO1]
+	currentData[AUTOGO2] = values[VALNDXAUTOGO2]
+	currentData[AUTOGO3] = values[VALNDXAUTOGO3]
+	currentData[AUTOGO4] = values[VALNDXAUTOGO4]
+	currentData[CYCLE] = values[VALNDXCYCLE]  # cycle up and down until stopped checkbox
+	currentData[DOWNMIN] = values[VALNDXDOWNMIN]
+	currentData[DOWNSEC] = values[VALNDXDOWNSEC]
+	currentData[UPMIN] = values[VALNDXUPMIN]
+	currentData[UPSEC] = values[VALNDXUPSEC]
 
-	upTicks = int((values[VALDXUPMIN] * 60 + values[VALDXUPSEC]) * myFactor)
-	downTicks = int((values[VALDXDOWNMIN] * 60 + values[VALDXDOWNSEC]) * myFactor)
+	upTicks = int((values[VALNDXUPMIN] * 60 + values[VALNDXUPSEC]) * myFactor)
+	downTicks = int((values[VALNDXDOWNMIN] * 60 + values[VALNDXDOWNSEC]) * myFactor)
 
 	if event != "__TIMEOUT__":
 		addEvent(event)
