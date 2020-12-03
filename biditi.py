@@ -14,8 +14,8 @@ else:
 	SG.ChangeLookAndFeel("DarkPurple6")
 
 
-BTNDEFAULTTXTCOLOR = "#444444"
-BTNFONTSZ = 9
+BTNDEFAULTTXTCOLOR = "#111111"
+BTNFONTSZ = 8
 BTNQUITCOLOR = "#992222"
 BTNRESETCOLOR = "#992233"
 BTNSTARTCOLOR = "#116611"
@@ -23,10 +23,10 @@ BTNSTOPCOLOR = "#662200"
 BTNTASKCOLOR = "#33CC88"
 BTNTASKDOWNCOLOR = "#CC3322"
 BTNZEROCOLOR = "#AA2233"
-COUNTERFONTSZ = 20
+COUNTERFONTSZ = 15
 CYCLECOUNTERCOLOR = "#773322"
 GRN = "#44CC33"
-LABELFONTSZ = 8
+LABELFONTSZ = 9
 LASTFILENAME = "biditi.last"
 MODE_NORMAL = "MODE_NORMAL"
 MODE_RESTART = "MODE_RESTART"
@@ -35,14 +35,14 @@ MYFACTOR = 10
 MYSCALE = 100
 PNK = "#FF2266"
 SPACECOLOR = "#888888"
-SPACEFONTSZ = 9
+SPACEFONTSZ = 6
 STARTCOL = "#44CC33"
-STARTSTOPBTNTXTCOLOR = "#118822"
+STARTSTOPBTNTXTCOLOR = "#888822"
 STOPMODE_BUTTON = "STOPMODE_BUTTON"
 STOPMODE_CYCLE = "STOPMODE_CYCLE"
 TASKCOUNTERCOLOR = "#448811"
 TIMERCOL = "#2F0004"
-TIMERFONTSZ = 70
+TIMERFONTSZ = 25
 
 
 AUTOGO1 = "AUTOGO1"
@@ -122,7 +122,7 @@ def pickleIt(fileName, dataToPickle):
 		FD_OUT_.flush()
 		FD_OUT_.close()
 	with open(LASTFILENAME, "tw") as FD_OUT_:
-		FD_OUT_.writelines(fileName + "\n")
+		FD_OUT_.writelines(fileName)
 		FD_OUT_.flush()
 		FD_OUT_.close()
 
@@ -327,6 +327,8 @@ layout = [
 		SG.Col(TIMERCOLUMN),
 		SG.Col(CYCLESCOLUMN),
 		SG.Col(STARTSCOLUMN),
+	],
+	[
 		SG.Col(TASK1COLUMN),
 		SG.Col(TASK2COLUMN),
 		SG.Col(TASK3COLUMN),
@@ -334,19 +336,20 @@ layout = [
 	],
 	[
 		SG.Text("up min", size=(8, 1), font=("Source Code Pro", SPACEFONTSZ)),
-		SG.Slider(range=(0, 60), orientation="h", size=(20, 20), default_value=currentData[UPMIN], font=("Source Code Pro", 20)),
+		SG.Slider(range=(0, 60), orientation="h", size=(8, 15), default_value=currentData[UPMIN], font=("Source Code Pro", 10)),
 		SG.Text("up sec", size=(8, 1), font=("Source Code Pro", SPACEFONTSZ)),
-		SG.Slider(range=(0, 60), orientation="h", size=(20, 20), default_value=currentData[UPSEC], font=("Source Code Pro", 20))
+		SG.Slider(range=(0, 60), orientation="h", size=(8, 15), default_value=currentData[UPSEC], font=("Source Code Pro", 10))
 	],
 	[
 		SG.Text("down min", size=(8, 1), font=("Source Code Pro", SPACEFONTSZ)),
-		SG.Slider(range=(0, 60), orientation="h", size=(20, 20), default_value=currentData[DOWNMIN], font=("Source Code Pro", 20)),
+		SG.Slider(range=(0, 60), orientation="h", size=(8, 15), default_value=currentData[DOWNMIN], font=("Source Code Pro", 10)),
 		SG.Text("down sec", size=(8, 1), font=("Source Code Pro", SPACEFONTSZ)),
-		SG.Slider(range=(0, 60), orientation="h", size=(20, 20), default_value=currentData[DOWNSEC], font=("Source Code Pro", 20)),
+		SG.Slider(range=(0, 60), orientation="h", size=(8, 15), default_value=currentData[DOWNSEC], font=("Source Code Pro", 10)),
 	],
 ]
 
-window = SG.Window("biditi", layout).finalize()
+
+window = SG.Window("biditi", layout, location=(0, 0)).finalize()
 SG.SetOptions(element_padding=(0, 0))
 
 
@@ -565,3 +568,12 @@ while True:  # Event Loop
 	else:
 		doStartButton()
 		updateWindowBackground("Black")
+
+
+"""
+import tkinter
+import cv2, PySimpleGUI as sg
+USE_CAMERA = 0      # change to 1 for front facing camera
+window, cap = sg.Window('Demo Application - OpenCV Integration', [[sg.Image(filename='', key='image')], ], location=(0, 0), grab_anywhere=True), cv2.VideoCapture(USE_CAMERA)
+while window(timeout=10)[0] != sg.WIN_CLOSED:
+    window['image'](data=cv2.imencode('.png', cap.read()[1])[1].tobytes())"""
