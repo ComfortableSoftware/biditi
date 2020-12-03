@@ -9,13 +9,13 @@ import PySimpleGUI as SG
 
 CWD = PATH.abspath(".")
 if CWD.find("_DEV") > -1:
-	SG.ChangeLookAndFeel("DarkGreen1")
+	SG.ChangeLookAndFeel("DarkGreen5")
 else:
 	SG.ChangeLookAndFeel("DarkPurple6")
 
 
-BTNDEFAULTTXTCOLOR = "#550044"
-BTNFONTSZ = 9
+BTNDEFAULTTXTCOLOR = "#111111"
+BTNFONTSZ = 8
 BTNQUITCOLOR = "#992222"
 BTNRESETCOLOR = "#992233"
 BTNSTARTCOLOR = "#116611"
@@ -23,10 +23,10 @@ BTNSTOPCOLOR = "#662200"
 BTNTASKCOLOR = "#33CC88"
 BTNTASKDOWNCOLOR = "#CC3322"
 BTNZEROCOLOR = "#AA2233"
-COUNTERFONTSZ = 20
+COUNTERFONTSZ = 15
 CYCLECOUNTERCOLOR = "#773322"
 GRN = "#44CC33"
-LABELFONTSZ = 8
+LABELFONTSZ = 9
 LASTFILENAME = "biditi.last"
 MODE_NORMAL = "MODE_NORMAL"
 MODE_RESTART = "MODE_RESTART"
@@ -34,15 +34,15 @@ MODE_START = "MODE_START"
 MYFACTOR = 10
 MYSCALE = 100
 PNK = "#FF2266"
-SPACECOLOR = "#444444"
-SPACEFONTSZ = 9
-STARTCOLOR = "#44CC33"
-STARTSTOPBTNTXTCOLOR = "#118822"
+SPACECOLOR = "#888888"
+SPACEFONTSZ = 6
+STARTCOL = "#44CC33"
+STARTSTOPBTNTXTCOLOR = "#888822"
 STOPMODE_BUTTON = "STOPMODE_BUTTON"
 STOPMODE_CYCLE = "STOPMODE_CYCLE"
 TASKCOUNTERCOLOR = "#448811"
-TIMERCOLOR = "#2F0004"
-TIMERFONTSZ = 70
+TIMERCOL = "#2F0004"
+TIMERFONTSZ = 25
 
 
 AUTOGO1 = "AUTOGO1"
@@ -66,15 +66,15 @@ UPMIN = "UPMIN"
 UPSEC = "UPSEC"
 
 
-VALNDXCYCLE = 0
-VALNDXAUTOGO1 = 1
-VALNDXAUTOGO2 = 2
-VALNDXAUTOGO3 = 3
-VALNDXAUTOGO4 = 4
-VALNDXUPMIN = 5
-VALNDXUPSEC = 6
-VALNDXDOWNMIN = 7
-VALNDXDOWNSEC = 8
+VALDXCYCLE = 0
+VALDXAUTOGO1 = 1
+VALDXAUTOGO2 = 2
+VALDXAUTOGO3 = 3
+VALDXAUTOGO4 = 4
+VALDXUPMIN = 5
+VALDXUPSEC = 6
+VALDXDOWNMIN = 7
+VALDXDOWNSEC = 8
 
 
 DEFAULTS = [
@@ -245,7 +245,7 @@ SPACE4 = {
 
 STARTSCOLUMN = [
 	[
-		SG.Text("(re)starts", size=(4, 1), text_color=STARTCOLOR, font=("Source Code Pro", COUNTERFONTSZ), justification="center", key="_startCount_"),
+		SG.Text("(re)starts", size=(4, 1), text_color=STARTCOL, font=("Source Code Pro", COUNTERFONTSZ), justification="center", key="_startCount_"),
 	],
 	[
 		SG.Text("starts", text_color=STARTSTOPBTNTXTCOLOR, font=("Source Code Pro", SPACEFONTSZ))
@@ -313,7 +313,7 @@ TASK4COLUMN = [
 ]
 
 TIMERCOLUMN = [
-	[SG.Text("timer", size=(5, 1), text_color=TIMERCOLOR, font=("Source Code Pro", TIMERFONTSZ), justification="center", key="_timer_")],
+	[SG.Text("timer", size=(5, 1), text_color=TIMERCOL, font=("Source Code Pro", TIMERFONTSZ), justification="center", key="_timer_")],
 	[
 		SG.Button("Start/Stop", **BTNSTARTSTOP),
 		SG.Button("Restart", **BTNRESTART),
@@ -327,6 +327,8 @@ layout = [
 		SG.Col(TIMERCOLUMN),
 		SG.Col(CYCLESCOLUMN),
 		SG.Col(STARTSCOLUMN),
+	],
+	[
 		SG.Col(TASK1COLUMN),
 		SG.Col(TASK2COLUMN),
 		SG.Col(TASK3COLUMN),
@@ -334,19 +336,20 @@ layout = [
 	],
 	[
 		SG.Text("up min", size=(8, 1), font=("Source Code Pro", SPACEFONTSZ)),
-		SG.Slider(range=(0, 60), orientation="h", size=(20, 20), default_value=currentData[UPMIN], font=("Source Code Pro", 20)),
+		SG.Slider(range=(0, 60), orientation="h", size=(8, 15), default_value=currentData[UPMIN], font=("Source Code Pro", 10)),
 		SG.Text("up sec", size=(8, 1), font=("Source Code Pro", SPACEFONTSZ)),
-		SG.Slider(range=(0, 60), orientation="h", size=(20, 20), default_value=currentData[UPSEC], font=("Source Code Pro", 20))
+		SG.Slider(range=(0, 60), orientation="h", size=(8, 15), default_value=currentData[UPSEC], font=("Source Code Pro", 10))
 	],
 	[
 		SG.Text("down min", size=(8, 1), font=("Source Code Pro", SPACEFONTSZ)),
-		SG.Slider(range=(0, 60), orientation="h", size=(20, 20), default_value=currentData[DOWNMIN], font=("Source Code Pro", 20)),
+		SG.Slider(range=(0, 60), orientation="h", size=(8, 15), default_value=currentData[DOWNMIN], font=("Source Code Pro", 10)),
 		SG.Text("down sec", size=(8, 1), font=("Source Code Pro", SPACEFONTSZ)),
-		SG.Slider(range=(0, 60), orientation="h", size=(20, 20), default_value=currentData[DOWNSEC], font=("Source Code Pro", 20)),
+		SG.Slider(range=(0, 60), orientation="h", size=(8, 15), default_value=currentData[DOWNSEC], font=("Source Code Pro", 10)),
 	],
 ]
 
-window = SG.Window("biditi", layout).finalize()
+
+window = SG.Window("biditi", layout, location=(0, 0)).finalize()
 SG.SetOptions(element_padding=(0, 0))
 
 
@@ -528,18 +531,18 @@ while True:  # Event Loop
 
 		# fold here ⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣
 
-	currentData[AUTOGO1] = values[VALNDXAUTOGO1]
-	currentData[AUTOGO2] = values[VALNDXAUTOGO2]
-	currentData[AUTOGO3] = values[VALNDXAUTOGO3]
-	currentData[AUTOGO4] = values[VALNDXAUTOGO4]
-	currentData[CYCLE] = values[VALNDXCYCLE]  # cycle up and down until stopped checkbox
-	currentData[DOWNMIN] = values[VALNDXDOWNMIN]
-	currentData[DOWNSEC] = values[VALNDXDOWNSEC]
-	currentData[UPMIN] = values[VALNDXUPMIN]
-	currentData[UPSEC] = values[VALNDXUPSEC]
+	currentData[AUTOGO1] = values[VALDXAUTOGO1]
+	currentData[AUTOGO2] = values[VALDXAUTOGO2]
+	currentData[AUTOGO3] = values[VALDXAUTOGO3]
+	currentData[AUTOGO4] = values[VALDXAUTOGO4]
+	currentData[CYCLE] = values[VALDXCYCLE]  # cycle up and down until stopped checkbox
+	currentData[DOWNMIN] = values[VALDXDOWNMIN]
+	currentData[DOWNSEC] = values[VALDXDOWNSEC]
+	currentData[UPMIN] = values[VALDXUPMIN]
+	currentData[UPSEC] = values[VALDXUPSEC]
 
-	upTicks = int((values[VALNDXUPMIN] * 60 + values[VALNDXUPSEC]) * myFactor)
-	downTicks = int((values[VALNDXDOWNMIN] * 60 + values[VALNDXDOWNSEC]) * myFactor)
+	upTicks = int((values[VALDXUPMIN] * 60 + values[VALDXUPSEC]) * myFactor)
+	downTicks = int((values[VALDXDOWNMIN] * 60 + values[VALDXDOWNSEC]) * myFactor)
 
 	if event != "__TIMEOUT__":
 		addEvent(event)
@@ -565,3 +568,12 @@ while True:  # Event Loop
 	else:
 		doStartButton()
 		updateWindowBackground("Black")
+
+
+"""
+import tkinter
+import cv2, PySimpleGUI as sg
+USE_CAMERA = 0      # change to 1 for front facing camera
+window, cap = sg.Window('Demo Application - OpenCV Integration', [[sg.Image(filename='', key='image')], ], location=(0, 0), grab_anywhere=True), cv2.VideoCapture(USE_CAMERA)
+while window(timeout=10)[0] != sg.WIN_CLOSED:
+    window['image'](data=cv2.imencode('.png', cap.read()[1])[1].tobytes())"""
