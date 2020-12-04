@@ -14,19 +14,24 @@ else:
 	SG.ChangeLookAndFeel("DarkPurple6")
 
 
+BLACK = "#000000"
 BTNDEFAULTTXTCOLOR = "#111111"
-BTNFONTSZ = 8
+BTNDOWNCOLOR = "#FF0044"
+BTNFONTSZ = 12
 BTNQUITCOLOR = "#992222"
 BTNRESETCOLOR = "#992233"
 BTNSTARTCOLOR = "#116611"
 BTNSTOPCOLOR = "#662200"
 BTNTASKCOLOR = "#33CC88"
 BTNTASKDOWNCOLOR = "#CC3322"
+BTNUPCOLOR = "#55CC00"
 BTNZEROCOLOR = "#AA2233"
-COUNTERFONTSZ = 15
+COUNTERFONTSZ = 20
+COUNTERCOLOR = "#009999"
 CYCLECOUNTERCOLOR = "#773322"
+FONT = "Source Code Pro"
 GRN = "#44CC33"
-LABELFONTSZ = 9
+LABELFONTSZ = 12
 LASTFILENAME = "biditi.last"
 MODE_NORMAL = "MODE_NORMAL"
 MODE_RESTART = "MODE_RESTART"
@@ -35,14 +40,17 @@ MYFACTOR = 10
 MYSCALE = 100
 PNK = "#FF2266"
 SPACECOLOR = "#888888"
-SPACEFONTSZ = 6
+SPACEFONTSZ = 10
 STARTCOL = "#44CC33"
 STARTSTOPBTNTXTCOLOR = "#888822"
 STOPMODE_BUTTON = "STOPMODE_BUTTON"
 STOPMODE_CYCLE = "STOPMODE_CYCLE"
 TASKCOUNTERCOLOR = "#448811"
 TIMERCOL = "#2F0004"
-TIMERFONTSZ = 25
+TIMERDOWNBKGNDCOLOR = "#FF0000"
+TIMERUPBKGNDCOLOR = "#00FF00"
+TIMEROFFBKGNDCOLOR = "#000000"
+TIMERFONTSZ = 50
 
 
 AUTOGO1 = "AUTOGO1"
@@ -71,10 +79,6 @@ VALDXAUTOGO1 = 1
 VALDXAUTOGO2 = 2
 VALDXAUTOGO3 = 3
 VALDXAUTOGO4 = 4
-VALDXUPMIN = 5
-VALDXUPSEC = 6
-VALDXDOWNMIN = 7
-VALDXDOWNSEC = 8
 
 
 DEFAULTS = [
@@ -94,7 +98,7 @@ DEFAULTS = [
 	(TASK4COUNT, 0,),
 	(TEXTNAME, "biditi.txt",),
 	(UPMIN, 0,),
-	(UPSEC, 10,),
+	(UPSEC, 14,),
 ]
 
 def defaults():
@@ -157,200 +161,392 @@ def myInit():
 myInit()
 
 
+# #*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#
+# buttons defined here, don't forget to ** double unpack these when used
+# #*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#
+
+BTNDOWNMINMINUS = {
+	"focus": True,
+	"font": (FONT, BTNFONTSZ),
+	"button_color": (BTNDEFAULTTXTCOLOR, BTNDOWNCOLOR),
+}
+
+BTNDOWNMINPLUS = {
+	"focus": True,
+	"font": (FONT, BTNFONTSZ),
+	"button_color": (BTNDEFAULTTXTCOLOR, BTNUPCOLOR),
+}
+
+BTNDOWNSECMINUS = {
+	"focus": True,
+	"font": (FONT, BTNFONTSZ),
+	"button_color": (BTNDEFAULTTXTCOLOR, BTNDOWNCOLOR),
+}
+
+BTNDOWNSECPLUS = {
+	"focus": True,
+	"font": (FONT, BTNFONTSZ),
+	"button_color": (BTNDEFAULTTXTCOLOR, BTNUPCOLOR),
+}
+
+BTNQUIT = {
+	"focus": True,
+	"font": (FONT, BTNFONTSZ),
+	"button_color": (BTNDEFAULTTXTCOLOR, BTNQUITCOLOR),
+}
+
+BTNRESETC = {
+	"focus": True,
+	"font": (FONT, BTNFONTSZ),
+	"button_color": (BTNDEFAULTTXTCOLOR, BTNRESETCOLOR),
+}
+
+BTNRESTART = {
+	"focus": True,
+	"font": (FONT, BTNFONTSZ),
+	"button_color": (BTNDEFAULTTXTCOLOR, BTNSTARTCOLOR),
+}
+
 BTNSTART = {
 	"button_color": (BTNDEFAULTTXTCOLOR, BTNSTARTCOLOR),
 }
 
-BTNSTARTSTOP = {
+BTNGOSTOP = {
 	"focus": True,
-	"font": ("Source Code Pro", BTNFONTSZ),
-	"button_color": (BTNDEFAULTTXTCOLOR, "Black"),
+	"font": (FONT, BTNFONTSZ),
+	"button_color": (BTNDEFAULTTXTCOLOR, BLACK),
 }
 
 BTNSTOP = {
 	"button_color": (BTNDEFAULTTXTCOLOR, BTNSTOPCOLOR),
 }
 
-BTNRESTART = {
+BTNTASKUP = {
 	"focus": True,
-	"font": ("Source Code Pro", BTNFONTSZ),
-	"button_color": (BTNDEFAULTTXTCOLOR, BTNSTARTCOLOR),
-}
-
-BTNQUIT = {
-	"focus": True,
-	"font": ("Source Code Pro", BTNFONTSZ),
-	"button_color": (BTNDEFAULTTXTCOLOR, BTNQUITCOLOR),
-}
-
-BTNRESETC = {
-	"focus": True,
-	"font": ("Source Code Pro", BTNFONTSZ),
-	"button_color": (BTNDEFAULTTXTCOLOR, BTNRESETCOLOR),
-}
-
-BTNTASK = {
-	"focus": True,
-	"font": ("Source Code Pro", BTNFONTSZ),
-	"button_color": (BTNDEFAULTTXTCOLOR, BTNTASKCOLOR),
+	"font": (FONT, BTNFONTSZ),
+	"button_color": (BTNDEFAULTTXTCOLOR, BTNUPCOLOR),
 }
 
 BTNTASKDOWN = {
 	"focus": True,
-	"font": ("Source Code Pro", BTNFONTSZ),
-	"button_color": (BTNDEFAULTTXTCOLOR, BTNTASKDOWNCOLOR),
+	"font": (FONT, BTNFONTSZ),
+	"button_color": (BTNDEFAULTTXTCOLOR, BTNDOWNCOLOR),
+}
+
+BTNUPMINMINUS = {
+	"focus": True,
+	"font": (FONT, BTNFONTSZ),
+	"button_color": (BTNDEFAULTTXTCOLOR, BTNDOWNCOLOR),
+}
+
+BTNUPMINPLUS = {
+	"focus": True,
+	"font": (FONT, BTNFONTSZ),
+	"button_color": (BTNDEFAULTTXTCOLOR, BTNUPCOLOR),
+}
+
+BTNUPSECMINUS = {
+	"focus": True,
+	"font": (FONT, BTNFONTSZ),
+	"button_color": (BTNDEFAULTTXTCOLOR, BTNDOWNCOLOR),
+}
+
+BTNUPSECPLUS = {
+	"focus": True,
+	"font": (FONT, BTNFONTSZ),
+	"button_color": (BTNDEFAULTTXTCOLOR, BTNUPCOLOR),
 }
 
 BTNZEROSTUFF = {
 	"focus": True,
-	"font": ("Source Code Pro", BTNFONTSZ),
+	"font": (FONT, BTNFONTSZ),
 	"button_color": (BTNDEFAULTTXTCOLOR, BTNZEROCOLOR),
 }
 
-CYCLESCOLUMN = [
-	[
-		SG.Text("cycles", size=(5, 1), text_color=CYCLECOUNTERCOLOR, font=("Source Code Pro", COUNTERFONTSZ), justification="center", key="_cycleCount_"),
-	],
-	[
-		SG.Checkbox("cycle", font=("Source Code Pro", SPACEFONTSZ), default=currentData[CYCLE]),
-	],
-	[
-		SG.Btn("resetC", **BTNRESETC)
-	],
+
+# #*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#
+# columns, remember to ** unpack as appropriate
+# #*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#
+
+ADJDOWNTIMEMINSCOLUMN = [
+	[SG.Btn(
+		"downMin+",
+		**BTNDOWNMINPLUS,
+	),],
+	[SG.Text(
+		currentData[DOWNMIN],
+		size=(3, 1),
+		text_color=CYCLECOUNTERCOLOR,
+		font=(FONT, COUNTERFONTSZ),
+		justification="center",
+		key="_downMin_",
+	),],
+	[SG.Btn(
+		"downMin-",
+		**BTNDOWNMINMINUS,
+	),],
 ]
 
-SPACE1 = {
-	"size": (58, 1),
-	"text_color": SPACECOLOR,
-	"font": ("Source Code Pro", SPACEFONTSZ),
-}
+ADJDOWNTIMESECSCOLUMN = [
+	[SG.Btn(
+		"downSec+",
+		**BTNDOWNSECPLUS,
+	),],
+	[SG.Text(
+		currentData[DOWNSEC],
+		size=(3, 1),
+		text_color=CYCLECOUNTERCOLOR,
+		font=(FONT, COUNTERFONTSZ),
+		justification="center",
+		key="_downSec_",
+	),],
+	[SG.Btn(
+		"downSec-",
+		**BTNDOWNSECMINUS,
+	),],
+]
 
-SPACE2 = {
-	"size": (1, 1),
-	"text_color": SPACECOLOR,
-	"font": ("Source Code Pro", SPACEFONTSZ),
-}
+ADJUPTIMEMINSCOLUMN = [
+	[SG.Btn(
+		"upMin+",
+		**BTNUPMINPLUS,
+	),],
+	[SG.Text(
+		currentData[UPMIN],
+		size=(3, 1),
+		text_color=CYCLECOUNTERCOLOR,
+		font=(FONT, COUNTERFONTSZ),
+		justification="center",
+		key="_upMin_",
+	),],
+	[SG.Btn(
+		"upMin-",
+		**BTNUPMINMINUS,
+	),],
+]
 
-SPACE3 = {
-	"size": (1, 1),
-	"text_color": SPACECOLOR,
-	"font": ("Source Code Pro", SPACEFONTSZ),
-}
+ADJUPTIMESECSCOLUMN = [
+	[SG.Btn(
+		"upSec+",
+		**BTNUPSECPLUS,
+	),],
+	[SG.Text(
+		currentData[UPSEC],
+		size=(3, 1),
+		text_color=CYCLECOUNTERCOLOR,
+		font=(FONT, COUNTERFONTSZ),
+		justification="center",
+		key="_upSec_",
+	),],
+	[SG.Btn(
+		"upSec-",
+		**BTNUPSECMINUS,
+	),],
+]
 
-SPACE4 = {
-	"size": (1, 1),
-	"text_color": SPACECOLOR,
-	"font": ("Source Code Pro", SPACEFONTSZ),
-}
+CYCLESCOLUMN = [
+	[SG.Text(
+		"cycles", size=(5, 1),
+		text_color=CYCLECOUNTERCOLOR,
+		font=(FONT, COUNTERFONTSZ),
+		justification="center",
+		key="_cycleCount_",
+	),],
+	[SG.Checkbox(
+		"cycle",
+		font=(FONT, SPACEFONTSZ),
+		default=currentData[CYCLE],
+	),],
+	[SG.Btn(
+		"reset^",
+		**BTNRESETC)],
+]
+
+MAINBTNSCOLUMN = [
+	[SG.Button(
+		"Go/Stop",
+		**BTNGOSTOP,
+	),],
+	[SG.Button(
+		"Restart",
+		**BTNRESTART,
+	),],
+	[SG.Button(
+		"Quit",
+		**BTNQUIT,
+	),],
+	[SG.Btn(
+		"ZEROALL",
+		**BTNZEROSTUFF,
+	),],
+]
 
 STARTSCOLUMN = [
-	[
-		SG.Text("(re)starts", size=(4, 1), text_color=STARTCOL, font=("Source Code Pro", COUNTERFONTSZ), justification="center", key="_startCount_"),
-	],
-	[
-		SG.Text("starts", text_color=STARTSTOPBTNTXTCOLOR, font=("Source Code Pro", SPACEFONTSZ))
-	],
+	[SG.Text(
+		"(re)starts",
+		size=(4, 1),
+		text_color=STARTCOL,
+		font=(FONT, COUNTERFONTSZ),
+		justification="center",
+		key="_startCount_",
+	),],
+	[SG.Text(
+		"starts",
+		text_color=STARTSTOPBTNTXTCOLOR,
+		font=(FONT, SPACEFONTSZ),
+	),],
 ]
 
 TASK1COLUMN = [
-	[
-		SG.Text("", size=(3, 1), text_color=TASKCOUNTERCOLOR, font=("Source Code Pro", COUNTERFONTSZ), justification="center", key="_task1count_"),
-	],
-	[
-		SG.Button("task1+", **BTNTASK),
-	],
-	[
-		SG.Button("task1-", **BTNTASKDOWN),
-	],
-	[
-		SG.Checkbox("autogo1", font=("Source Code Pro", SPACEFONTSZ), default=currentData[AUTOGO1]),
-	],
+	[SG.Button(
+		"task1+",
+		**BTNTASKUP,
+	),],
+	[SG.Text(
+		"",
+		size=(3, 1),
+		text_color=TASKCOUNTERCOLOR,
+		font=(FONT, COUNTERFONTSZ),
+		justification="center",
+		key="_task1count_",
+	),],
+	[SG.Button(
+		"task1-",
+		**BTNTASKDOWN,
+	),],
+	[SG.Checkbox(
+		"autogo1",
+		font=(FONT, SPACEFONTSZ),
+		default=currentData[AUTOGO1],
+	),],
 ]
 
 TASK2COLUMN = [
-	[
-		SG.Text("", size=(3, 1), text_color=TASKCOUNTERCOLOR, font=("Source Code Pro", COUNTERFONTSZ), justification="center", key="_task2count_"),
-	],
-	[
-		SG.Button("task2+", **BTNTASK),
-	],
-	[
-		SG.Button("task2-", **BTNTASKDOWN),
-	],
-	[
-		SG.Checkbox("autogo2", font=("Source Code Pro", SPACEFONTSZ), default=currentData[AUTOGO2]),
-	],
+	[SG.Button(
+		"task2+",
+		**BTNTASKUP,
+	),],
+	[SG.Text(
+		"",
+		size=(3, 1),
+		text_color=TASKCOUNTERCOLOR,
+		font=(FONT, COUNTERFONTSZ),
+		justification="center",
+		key="_task2count_",
+	),],
+	[SG.Button(
+		"task2-",
+		**BTNTASKDOWN,
+	),],
+	[SG.Checkbox(
+		"autogo2",
+		font=(FONT, SPACEFONTSZ),
+		default=currentData[AUTOGO2],
+	),],
 ]
 
 TASK3COLUMN = [
-	[
-		SG.Text("", size=(3, 1), text_color=TASKCOUNTERCOLOR, font=("Source Code Pro", COUNTERFONTSZ), justification="center", key="_task3count_"),
-	],
-	[
-		SG.Button("task3+", **BTNTASK),
-	],
-	[
-		SG.Button("task3-", **BTNTASKDOWN),
-	],
-	[
-		SG.Checkbox("autogo3", font=("Source Code Pro", SPACEFONTSZ), default=currentData[AUTOGO3]),
-	],
+	[SG.Button(
+		"task3+",
+		**BTNTASKUP,
+	),],
+	[SG.Text(
+		"",
+		size=(3, 1),
+		text_color=TASKCOUNTERCOLOR,
+		font=(FONT, COUNTERFONTSZ),
+		justification="center",
+		key="_task3count_"
+	),],
+	[SG.Button(
+		"task3-",
+		**BTNTASKDOWN,
+	),],
+	[SG.Checkbox(
+		"autogo3",
+		font=(FONT, SPACEFONTSZ),
+		default=currentData[AUTOGO3],
+	),],
 ]
 
 TASK4COLUMN = [
-	[
-		SG.Text("", size=(3, 1), text_color=TASKCOUNTERCOLOR, font=("Source Code Pro", COUNTERFONTSZ), justification="center", key="_task4count_"),
-	],
-	[
-		SG.Button("task4+", **BTNTASK),
-	],
-	[
-		SG.Button("task4-", **BTNTASKDOWN),
-	],
-	[
-		SG.Checkbox("autogo4", font=("Source Code Pro", SPACEFONTSZ), default=currentData[AUTOGO4]),
-	],
+	[SG.Button(
+		"task4+",
+		**BTNTASKUP,
+	),],
+	[SG.Text(
+		"",
+		size=(3, 1),
+		text_color=TASKCOUNTERCOLOR,
+		font=(FONT, COUNTERFONTSZ),
+		justification="center",
+		key="_task4count_",
+	),],
+	[SG.Button(
+		"task4-",
+		**BTNTASKDOWN,
+	),],
+	[SG.Checkbox(
+		"autogo4",
+		font=(FONT, SPACEFONTSZ),
+		default=currentData[AUTOGO4],
+	),],
 ]
 
 TIMERCOLUMN = [
-	[SG.Text("timer", size=(5, 1), text_color=TIMERCOL, font=("Source Code Pro", TIMERFONTSZ), justification="center", key="_timer_")],
-	[
-		SG.Button("Start/Stop", **BTNSTARTSTOP),
-		SG.Button("Restart", **BTNRESTART),
-		SG.Button("Quit", **BTNQUIT),
-		SG.Btn("zero", **BTNZEROSTUFF),
-	]
+	[SG.Text(
+		"timer", size=(5, 1),
+		text_color=TIMERCOL,
+		font=(FONT, TIMERFONTSZ),
+		justification="center",
+		key="_timer_",
+	),],
 ]
 
 layout = [
 	[
 		SG.Col(TIMERCOLUMN),
+		SG.Col(MAINBTNSCOLUMN),
 		SG.Col(CYCLESCOLUMN),
-		SG.Col(STARTSCOLUMN),
 	],
 	[
 		SG.Col(TASK1COLUMN),
 		SG.Col(TASK2COLUMN),
 		SG.Col(TASK3COLUMN),
 		SG.Col(TASK4COLUMN),
+		SG.Col(STARTSCOLUMN),
 	],
 	[
-		SG.Text("up min", size=(8, 1), font=("Source Code Pro", SPACEFONTSZ)),
-		SG.Slider(range=(0, 60), orientation="h", size=(8, 15), default_value=currentData[UPMIN], font=("Source Code Pro", 10)),
-		SG.Text("up sec", size=(8, 1), font=("Source Code Pro", SPACEFONTSZ)),
-		SG.Slider(range=(0, 60), orientation="h", size=(8, 15), default_value=currentData[UPSEC], font=("Source Code Pro", 10))
-	],
-	[
-		SG.Text("down min", size=(8, 1), font=("Source Code Pro", SPACEFONTSZ)),
-		SG.Slider(range=(0, 60), orientation="h", size=(8, 15), default_value=currentData[DOWNMIN], font=("Source Code Pro", 10)),
-		SG.Text("down sec", size=(8, 1), font=("Source Code Pro", SPACEFONTSZ)),
-		SG.Slider(range=(0, 60), orientation="h", size=(8, 15), default_value=currentData[DOWNSEC], font=("Source Code Pro", 10)),
+		SG.Col(ADJUPTIMEMINSCOLUMN),
+#		SG.Text(
+#			":",
+#			size=(1,1),
+#			text_color=CYCLECOUNTERCOLOR,
+#			font=(FONT, COUNTERFONTSZ),
+#			justification="center",
+#		),
+		SG.Col(ADJUPTIMESECSCOLUMN),
+		SG.Text(
+			"  ",
+			size=(1,1),
+			text_color=COUNTERCOLOR,
+			font=(FONT, COUNTERFONTSZ),
+			justification="center",
+		),
+		SG.Col(ADJDOWNTIMEMINSCOLUMN),
+#		SG.Text(
+#			":",
+#			size=(1,1),
+#			text_color=CYCLECOUNTERCOLOR,
+#			font=(FONT, COUNTERFONTSZ),
+#			justification="center",
+#		),
+		SG.Col(ADJDOWNTIMESECSCOLUMN),
 	],
 ]
 
 
-window = SG.Window("biditi", layout, location=(0, 0)).finalize()
-SG.SetOptions(element_padding=(0, 0))
+window = SG.Window("biditi", layout, location=(0, 0), element_padding=(0, 0)).finalize()
 
 
 def nowStr(dtObj=DT.now()):
@@ -366,6 +562,10 @@ def updateTime():
 	window.Element("_task2count_").Update(value=("{:03d}".format(currentData[TASK2COUNT])))
 	window.Element("_task3count_").Update(value=("{:03d}".format(currentData[TASK3COUNT])))
 	window.Element("_task4count_").Update(value=("{:03d}".format(currentData[TASK4COUNT])))
+	window.Element("_downMin_").Update(value=f"{currentData[DOWNMIN]}")
+	window.Element("_downSec_").Update(value=f"{currentData[DOWNSEC]}")
+	window.Element("_upMin_").Update(value=f"{currentData[UPMIN]}")
+	window.Element("_upSec_").Update(value=f"{currentData[UPSEC]}")
 
 
 def updateWindowBackground(COLOR):
@@ -374,11 +574,11 @@ def updateWindowBackground(COLOR):
 
 
 def doStartButton():
-	window.find_element("Start/Stop").Update(**BTNSTART)
+	window.find_element("Go/Stop").Update(**BTNSTART)
 
 
 def doStopButton():
-	window.find_element("Start/Stop").Update(**BTNSTOP)
+	window.find_element("Go/Stop").Update(**BTNSTOP)
 
 
 def zeroStuff(modeIn):
@@ -386,7 +586,7 @@ def zeroStuff(modeIn):
 	ticks = 0
 	directionUp = True
 	updateTime()
-	updateWindowBackground("Green")
+	updateWindowBackground(TIMEROFFBKGNDCOLOR)
 	if modeIn == MODE_NORMAL:
 		cycleCount = 0
 		currentData = defaults()
@@ -399,7 +599,7 @@ def zeroStuff(modeIn):
 def startTimer():
 	global timerRunning, currentData
 	timerRunning = True
-	updateWindowBackground("Green")
+	updateWindowBackground(TIMERUPBKGNDCOLOR)
 	doStopButton()
 	currentData[STARTCOUNT] += 1
 	updateTime()
@@ -408,7 +608,7 @@ def startTimer():
 def stopTimer(stopMode):
 	global timerRunning, cycleCount
 	timerRunning = False
-	updateWindowBackground("Black")
+	updateWindowBackground(TIMEROFFBKGNDCOLOR)
 	doStartButton()
 	if stopMode == STOPMODE_CYCLE:
 		cycleCount += 1
@@ -444,7 +644,7 @@ while True:  # Event Loop
 		stopTimer(STOPMODE_BUTTON)
 		pickleIt(currentData[FILENAME], currentData)
 		break
-	elif event == "Start/Stop":
+	elif event == "":
 		# fold here ⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥
 		timerRunning = (not timerRunning)
 		if timerRunning:
@@ -459,7 +659,7 @@ while True:  # Event Loop
 		zeroStuff(MODE_RESTART)
 		startTimer()
 		# fold here ⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣
-	elif event == "zero":
+	elif event == "ZEROALL":
 		# fold here ⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥
 		zeroStuff(MODE_NORMAL)
 		stopTimer(STOPMODE_BUTTON)
@@ -528,7 +728,46 @@ while True:  # Event Loop
 		# fold here ⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥
 		cycleCount = 0
 		stopTimer(STOPMODE_BUTTON)
-
+		# fold here ⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣
+	elif event == "downMin+":
+		# fold here ⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥
+		currentData[DOWNMIN] += 1
+		updateTime()
+		# fold here ⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣
+	elif event == "downMin-":
+		# fold here ⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥
+		currentData[DOWNMIN] -= 1
+		updateTime()
+		# fold here ⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣
+	elif event == "downSec+":
+		# fold here ⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥
+		currentData[DOWNSEC] += 1
+		updateTime()
+		# fold here ⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣
+	elif event == "downSec-":
+		# fold here ⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥
+		currentData[DOWNSEC] -= 1
+		updateTime()
+		# fold here ⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣
+	elif event == "upMin+":
+		# fold here ⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥
+		currentData[UPMIN] += 1
+		updateTime()
+		# fold here ⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣
+	elif event == "upMin-":
+		# fold here ⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥
+		currentData[UPMIN] -= 1
+		updateTime()
+		# fold here ⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣
+	elif event == "upSec+":
+		# fold here ⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥
+		currentData[UPSEC] += 1
+		updateTime()
+		# fold here ⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣
+	elif event == "upSec-":
+		# fold here ⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥
+		currentData[UPSEC] -= 1
+		updateTime()
 		# fold here ⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣
 
 	currentData[AUTOGO1] = values[VALDXAUTOGO1]
@@ -536,13 +775,9 @@ while True:  # Event Loop
 	currentData[AUTOGO3] = values[VALDXAUTOGO3]
 	currentData[AUTOGO4] = values[VALDXAUTOGO4]
 	currentData[CYCLE] = values[VALDXCYCLE]  # cycle up and down until stopped checkbox
-	currentData[DOWNMIN] = values[VALDXDOWNMIN]
-	currentData[DOWNSEC] = values[VALDXDOWNSEC]
-	currentData[UPMIN] = values[VALDXUPMIN]
-	currentData[UPSEC] = values[VALDXUPSEC]
 
-	upTicks = int((values[VALDXUPMIN] * 60 + values[VALDXUPSEC]) * myFactor)
-	downTicks = int((values[VALDXDOWNMIN] * 60 + values[VALDXDOWNSEC]) * myFactor)
+	upTicks = int((currentData[UPMIN] * 60 + currentData[UPSEC]) * myFactor)
+	downTicks = int((currentData[DOWNMIN] * 60 + currentData[DOWNSEC]) * myFactor)
 
 	if event != "__TIMEOUT__":
 		addEvent(event)
@@ -551,9 +786,10 @@ while True:  # Event Loop
 			ticks += 1
 		else:
 			ticks -= 1
+		print(ticks)
 		updateTime()
 		if directionUp & (ticks >= upTicks):
-			updateWindowBackground("Red")
+			updateWindowBackground(TIMERDOWNBKGNDCOLOR)
 			directionUp = False
 			ticks = downTicks
 		if directionUp is False and ticks <= myFactor:
@@ -561,19 +797,15 @@ while True:  # Event Loop
 				ticks = 0
 				stopTimer(STOPMODE_CYCLE)
 			else:
-				updateWindowBackground("Green")
+				updateWindowBackground(TIMERUPBKGNDCOLOR)
 				directionUp = True
 				cycleCount += 1
 				ticks = 0
 	else:
 		doStartButton()
-		updateWindowBackground("Black")
+		updateWindowBackground(TIMEROFFBKGNDCOLOR)
 
 
-"""
-import tkinter
-import cv2, PySimpleGUI as sg
-USE_CAMERA = 0      # change to 1 for front facing camera
-window, cap = sg.Window('Demo Application - OpenCV Integration', [[sg.Image(filename='', key='image')], ], location=(0, 0), grab_anywhere=True), cv2.VideoCapture(USE_CAMERA)
-while window(timeout=10)[0] != sg.WIN_CLOSED:
-    window['image'](data=cv2.imencode('.png', cap.read()[1])[1].tobytes())"""
+# #*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#
+# end of biditi.property
+# #*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#
