@@ -120,7 +120,7 @@ timerRunning = False
 
 
 def pickleIt(fileName, dataToPickle):
-	print(f"filename is {fileName}")
+	# print(f"filename is {fileName}")
 	with open(fileName, 'wb') as FD_OUT_:
 		PD.dump(dataToPickle, FD_OUT_)
 		FD_OUT_.flush()
@@ -150,7 +150,7 @@ def getData(fileName):
 
 def myInit():
 	if PATH.exists(LASTFILENAME):
-		print(f"lastfilename {LASTFILENAME} being opened\n")
+		# print(f"lastfilename {LASTFILENAME} being opened\n")
 		with open(LASTFILENAME, "tr") as FD_IN_:
 			filename = FD_IN_.readline()
 		getData(filename)
@@ -562,10 +562,10 @@ def updateTime():
 	window.Element("_task2count_").Update(value=("{:03d}".format(currentData[TASK2COUNT])))
 	window.Element("_task3count_").Update(value=("{:03d}".format(currentData[TASK3COUNT])))
 	window.Element("_task4count_").Update(value=("{:03d}".format(currentData[TASK4COUNT])))
-	window.Element("_downMin_").Update(value=f"{currentData[DOWNMIN]}")
-	window.Element("_downSec_").Update(value=f"{currentData[DOWNSEC]}")
-	window.Element("_upMin_").Update(value=f"{currentData[UPMIN]}")
-	window.Element("_upSec_").Update(value=f"{currentData[UPSEC]}")
+	window.Element("_downMin_").Update(value=f"{currentData[DOWNMIN]:d}")
+	window.Element("_downSec_").Update(value=f"{currentData[DOWNSEC]:d}")
+	window.Element("_upMin_").Update(value=f"{currentData[UPMIN]:d}")
+	window.Element("_upSec_").Update(value=f"{currentData[UPSEC]:d}")
 
 
 def updateWindowBackground(COLOR):
@@ -626,7 +626,7 @@ def addEvent(event2add):
 		outStr = ""
 		outStr += f"""{entryToAdd}	{currentData[TASK1COUNT]}	{currentData[TASK2COUNT]}	{currentData[TASK3COUNT]}	{currentData[TASK4COUNT]}
 	"""
-		print(outStr)
+		# print(outStr)
 		FDOut.writelines(outStr)
 		FDOut.flush()
 		FDOut.close()
@@ -786,7 +786,7 @@ while True:  # Event Loop
 			ticks += 1
 		else:
 			ticks -= 1
-		print(ticks)
+		# print(ticks)
 		updateTime()
 		if directionUp & (ticks >= upTicks):
 			updateWindowBackground(TIMERDOWNBKGNDCOLOR)
