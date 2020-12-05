@@ -10,7 +10,9 @@ import PySimpleGUI as SG
 CWD = PATH.abspath(".")
 if CWD.find("_DEV") > -1:
 	SG.ChangeLookAndFeel("DarkGreen5")
+	CONFIGDIRECTORY = "/home/will/.config/biditi_DEV/"
 else:
+	CONFIGDIRECTORY = "/home/will/.config/biditi/"
 	SG.ChangeLookAndFeel("DarkPurple6")
 
 
@@ -121,18 +123,18 @@ timerRunning = False
 
 def pickleIt(fileName, dataToPickle):
 	# print(f"filename is {fileName}")
-	with open(fileName, 'wb') as FD_OUT_:
+	with open(CONFIGDIRECTORY + fileName, 'wb') as FD_OUT_:
 		PD.dump(dataToPickle, FD_OUT_)
 		FD_OUT_.flush()
 		FD_OUT_.close()
-	with open(LASTFILENAME, "tw") as FD_OUT_:
+	with open(CONFIGDIRECTORY + LASTFILENAME, "tw") as FD_OUT_:
 		FD_OUT_.writelines(fileName)
 		FD_OUT_.flush()
 		FD_OUT_.close()
 
 
 def unPickleIt(fileName):
-	with open(fileName, "rb") as FD_IN_:
+	with open(CONFIGDIRECTORY + fileName, "rb") as FD_IN_:
 		dataToRTN_ = PD.load(FD_IN_)
 	return dataToRTN_
 
@@ -140,7 +142,7 @@ def unPickleIt(fileName):
 def getData(fileName):
 	# fold here ⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱
 	global currentData
-	if PATH.exists(fileName):
+	if PATH.exists(CONFIGDIRECTORY + fileName):
 		currentData = unPickleIt(fileName)
 	else:
 		currentData = defaults()
@@ -149,9 +151,9 @@ def getData(fileName):
 
 
 def myInit():
-	if PATH.exists(LASTFILENAME):
+	if PATH.exists(CONFIGDIRECTORY + LASTFILENAME):
 		# print(f"lastfilename {LASTFILENAME} being opened\n")
-		with open(LASTFILENAME, "tr") as FD_IN_:
+		with open(CONFIGDIRECTORY + LASTFILENAME, "tr") as FD_IN_:
 			filename = FD_IN_.readline()
 		getData(filename)
 	else:
@@ -622,7 +624,7 @@ def addEvent(event2add):
 	entryToAdd = [nowStr(DT.now()), event2add]
 	currentData[EVENTS].append(entryToAdd)
 	pickleIt(currentData[FILENAME], currentData)
-	with open(currentData[TEXTNAME], "ta") as FDOut:
+	with open(CONFIGDIRECTORY + currentData[TEXTNAME], "ta") as FDOut:
 		outStr = ""
 		outStr += f"""{entryToAdd}	{currentData[TASK1COUNT]}	{currentData[TASK2COUNT]}	{currentData[TASK3COUNT]}	{currentData[TASK4COUNT]}
 	"""
