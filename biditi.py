@@ -11,6 +11,9 @@ CWD = PATH.abspath(".")
 if CWD.find("_DEV") > -1:
 	SG.ChangeLookAndFeel("DarkGreen5")
 	CONFIGDIRECTORY = "/home/will/.config/biditi_DEV/"
+elif CWD.find("_android") > -1:
+	CONFIGDIRECTORY = ""
+	SG.ChangeLookAndFeel("DarkPurple6")
 else:
 	CONFIGDIRECTORY = "/home/will/.config/biditi/"
 	SG.ChangeLookAndFeel("DarkPurple6")
@@ -52,7 +55,7 @@ TIMERCOL = "#2F0004"
 TIMERDOWNBKGNDCOLOR = "#FF0000"
 TIMERUPBKGNDCOLOR = "#00FF00"
 TIMEROFFBKGNDCOLOR = "#000000"
-TIMERFONTSZ = 50
+TIMERFONTSZ = 60
 
 
 AUTOGO1 = "AUTOGO1"
@@ -272,7 +275,7 @@ BTNZEROSTUFF = {
 
 ADJDOWNTIMEMINSCOLUMN = [
 	[SG.Btn(
-		"downMin+",
+		"dnMin+",
 		**BTNDOWNMINPLUS,
 	),],
 	[SG.Text(
@@ -281,17 +284,17 @@ ADJDOWNTIMEMINSCOLUMN = [
 		text_color=CYCLECOUNTERCOLOR,
 		font=(FONT, COUNTERFONTSZ),
 		justification="center",
-		key="_downMin_",
+		key="_dnMin_",
 	),],
 	[SG.Btn(
-		"downMin-",
+		"dnMin-",
 		**BTNDOWNMINMINUS,
 	),],
 ]
 
 ADJDOWNTIMESECSCOLUMN = [
 	[SG.Btn(
-		"downSec+",
+		"dnSec+",
 		**BTNDOWNSECPLUS,
 	),],
 	[SG.Text(
@@ -300,10 +303,10 @@ ADJDOWNTIMESECSCOLUMN = [
 		text_color=CYCLECOUNTERCOLOR,
 		font=(FONT, COUNTERFONTSZ),
 		justification="center",
-		key="_downSec_",
+		key="_dnSec_",
 	),],
 	[SG.Btn(
-		"downSec-",
+		"dnSec-",
 		**BTNDOWNSECMINUS,
 	),],
 ]
@@ -509,40 +512,21 @@ layout = [
 	[
 		SG.Col(TIMERCOLUMN),
 		SG.Col(MAINBTNSCOLUMN),
+	],
+	[
 		SG.Col(CYCLESCOLUMN),
+		SG.Col(STARTSCOLUMN),
 	],
 	[
 		SG.Col(TASK1COLUMN),
 		SG.Col(TASK2COLUMN),
 		SG.Col(TASK3COLUMN),
 		SG.Col(TASK4COLUMN),
-		SG.Col(STARTSCOLUMN),
 	],
 	[
 		SG.Col(ADJUPTIMEMINSCOLUMN),
-#		SG.Text(
-#			":",
-#			size=(1,1),
-#			text_color=CYCLECOUNTERCOLOR,
-#			font=(FONT, COUNTERFONTSZ),
-#			justification="center",
-#		),
 		SG.Col(ADJUPTIMESECSCOLUMN),
-		SG.Text(
-			"  ",
-			size=(1,1),
-			text_color=COUNTERCOLOR,
-			font=(FONT, COUNTERFONTSZ),
-			justification="center",
-		),
 		SG.Col(ADJDOWNTIMEMINSCOLUMN),
-#		SG.Text(
-#			":",
-#			size=(1,1),
-#			text_color=CYCLECOUNTERCOLOR,
-#			font=(FONT, COUNTERFONTSZ),
-#			justification="center",
-#		),
 		SG.Col(ADJDOWNTIMESECSCOLUMN),
 	],
 ]
@@ -564,8 +548,8 @@ def updateTime():
 	window.Element("_task2count_").Update(value=("{:03d}".format(currentData[TASK2COUNT])))
 	window.Element("_task3count_").Update(value=("{:03d}".format(currentData[TASK3COUNT])))
 	window.Element("_task4count_").Update(value=("{:03d}".format(currentData[TASK4COUNT])))
-	window.Element("_downMin_").Update(value=f"{currentData[DOWNMIN]:d}")
-	window.Element("_downSec_").Update(value=f"{currentData[DOWNSEC]:d}")
+	window.Element("_dnMin_").Update(value=f"{currentData[DOWNMIN]:d}")
+	window.Element("_dnSec_").Update(value=f"{currentData[DOWNSEC]:d}")
 	window.Element("_upMin_").Update(value=f"{currentData[UPMIN]:d}")
 	window.Element("_upSec_").Update(value=f"{currentData[UPSEC]:d}")
 
@@ -731,17 +715,17 @@ while True:  # Event Loop
 		cycleCount = 0
 		stopTimer(STOPMODE_BUTTON)
 		# fold here ⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣
-	elif event == "downMin+":
+	elif event == "dnMin+":
 		# fold here ⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥
 		currentData[DOWNMIN] += 1
 		updateTime()
 		# fold here ⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣
-	elif event == "downMin-":
+	elif event == "dnMin-":
 		# fold here ⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥
 		currentData[DOWNMIN] -= 1
 		updateTime()
 		# fold here ⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣
-	elif event == "downSec+":
+	elif event == "dnSec+":
 		# fold here ⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥
 		currentData[DOWNSEC] += 1
 		updateTime()
