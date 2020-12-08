@@ -20,6 +20,7 @@ else:
 
 
 BLACK = "#000000"
+BTNADJTIMERFONTSZ = 2
 BTNDEFAULTTXTCOLOR = "#111111"
 BTNDOWNCOLOR = "#FF0044"
 BTNFONTSZ = 12
@@ -31,8 +32,8 @@ BTNTASKCOLOR = "#33CC88"
 BTNTASKDOWNCOLOR = "#CC3322"
 BTNUPCOLOR = "#55CC00"
 BTNZEROCOLOR = "#AA2233"
-COUNTERFONTSZ = 20
 COUNTERCOLOR = "#009999"
+COUNTERFONTSZ = 20
 CYCLECOUNTERCOLOR = "#773322"
 FONT = "Source Code Pro"
 GRN = "#44CC33"
@@ -53,9 +54,9 @@ STOPMODE_CYCLE = "STOPMODE_CYCLE"
 TASKCOUNTERCOLOR = "#448811"
 TIMERCOL = "#2F0004"
 TIMERDOWNBKGNDCOLOR = "#FF0000"
-TIMERUPBKGNDCOLOR = "#00FF00"
-TIMEROFFBKGNDCOLOR = "#000000"
 TIMERFONTSZ = 60
+TIMEROFFBKGNDCOLOR = "#000000"
+TIMERUPBKGNDCOLOR = "#00FF00"
 
 
 AUTOGO1 = "AUTOGO1"
@@ -68,7 +69,6 @@ DOWNMIN = "DOWNMIN"
 DOWNSEC = "DOWNSEC"
 EVENTS = "EVENTS"
 FILENAME = "FILENAME"
-STARTCOUNT = "STARTCOUNT"
 TASK1COUNT = "TASK1COUNT"
 TASK2COUNT = "TASK2COUNT"
 TASK3COUNT = "TASK3COUNT"
@@ -88,15 +88,14 @@ VALDXAUTOGO4 = 4
 
 DEFAULTS = [
 	(AUTOGO1, True,),
-	(AUTOGO2, False,),
-	(AUTOGO3, False,),
-	(AUTOGO4, False,),
+	(AUTOGO2, True,),
+	(AUTOGO3, True,),
+	(AUTOGO4, True,),
 	(CYCLE, False,),
 	(DOWNMIN, 0,),
 	(DOWNSEC, 7,),
 	(EVENTS, [],),
 	(FILENAME, "biditi.pkl",),
-	(STARTCOUNT, 0,),
 	(TASK1COUNT, 0,),
 	(TASK2COUNT, 0,),
 	(TASK3COUNT, 0,),
@@ -116,7 +115,6 @@ def defaults():
 currentData = defaults()
 
 
-cycleCount = 0  # counted at the end of the cycle
 directionUp = True
 myFactor = MYFACTOR
 myScale = MYSCALE
@@ -194,6 +192,11 @@ BTNDOWNSECPLUS = {
 	"button_color": (BTNDEFAULTTXTCOLOR, BTNUPCOLOR),
 }
 
+BTNUM1UP = {
+	"focus": True,
+	"font": (FONT, BTNADJTIMERFONTSZ),
+}
+
 BTNQUIT = {
 	"focus": True,
 	"font": (FONT, BTNFONTSZ),
@@ -210,6 +213,18 @@ BTNRESTART = {
 	"focus": True,
 	"font": (FONT, BTNFONTSZ),
 	"button_color": (BTNDEFAULTTXTCOLOR, BTNSTARTCOLOR),
+}
+
+BTNM1UP = {
+	"focus": True,
+	"font": (FONT, BTNADJTIMERFONTSZ),
+	"button_color": (BTNDEFAULTTXTCOLOR, BTNUPCOLOR),
+}
+
+BTNS1UP = {
+	"focus": True,
+	"font": (FONT, BTNADJTIMERFONTSZ),
+	"button_color": (BTNDEFAULTTXTCOLOR, BTNUPCOLOR),
 }
 
 BTNSTART = {
@@ -275,7 +290,7 @@ BTNZEROSTUFF = {
 
 ADJDOWNTIMEMINSCOLUMN = [
 	[SG.Btn(
-		"dnMin+",
+		"DM+",
 		**BTNDOWNMINPLUS,
 	),],
 	[SG.Text(
@@ -287,14 +302,14 @@ ADJDOWNTIMEMINSCOLUMN = [
 		key="_dnMin_",
 	),],
 	[SG.Btn(
-		"dnMin-",
+		"DM-",
 		**BTNDOWNMINMINUS,
 	),],
 ]
 
 ADJDOWNTIMESECSCOLUMN = [
 	[SG.Btn(
-		"dnSec+",
+		"DS+",
 		**BTNDOWNSECPLUS,
 	),],
 	[SG.Text(
@@ -306,14 +321,14 @@ ADJDOWNTIMESECSCOLUMN = [
 		key="_dnSec_",
 	),],
 	[SG.Btn(
-		"dnSec-",
+		"DS-",
 		**BTNDOWNSECMINUS,
 	),],
 ]
 
 ADJUPTIMEMINSCOLUMN = [
 	[SG.Btn(
-		"upMin+",
+		"UM+",
 		**BTNUPMINPLUS,
 	),],
 	[SG.Text(
@@ -325,14 +340,14 @@ ADJUPTIMEMINSCOLUMN = [
 		key="_upMin_",
 	),],
 	[SG.Btn(
-		"upMin-",
+		"UM-",
 		**BTNUPMINMINUS,
 	),],
 ]
 
 ADJUPTIMESECSCOLUMN = [
 	[SG.Btn(
-		"upSec+",
+		"US+",
 		**BTNUPSECPLUS,
 	),],
 	[SG.Text(
@@ -344,27 +359,9 @@ ADJUPTIMESECSCOLUMN = [
 		key="_upSec_",
 	),],
 	[SG.Btn(
-		"upSec-",
+		"US-",
 		**BTNUPSECMINUS,
 	),],
-]
-
-CYCLESCOLUMN = [
-	[SG.Text(
-		"cycles", size=(5, 1),
-		text_color=CYCLECOUNTERCOLOR,
-		font=(FONT, COUNTERFONTSZ),
-		justification="center",
-		key="_cycleCount_",
-	),],
-	[SG.Checkbox(
-		"cycle",
-		font=(FONT, SPACEFONTSZ),
-		default=currentData[CYCLE],
-	),],
-	[SG.Btn(
-		"reset^",
-		**BTNRESETC)],
 ]
 
 MAINBTNSCOLUMN = [
@@ -383,22 +380,6 @@ MAINBTNSCOLUMN = [
 	[SG.Btn(
 		"ZEROALL",
 		**BTNZEROSTUFF,
-	),],
-]
-
-STARTSCOLUMN = [
-	[SG.Text(
-		"(re)starts",
-		size=(4, 1),
-		text_color=STARTCOL,
-		font=(FONT, COUNTERFONTSZ),
-		justification="center",
-		key="_startCount_",
-	),],
-	[SG.Text(
-		"starts",
-		text_color=STARTSTOPBTNTXTCOLOR,
-		font=(FONT, SPACEFONTSZ),
 	),],
 ]
 
@@ -424,6 +405,14 @@ TASK1COLUMN = [
 		font=(FONT, SPACEFONTSZ),
 		default=currentData[AUTOGO1],
 	),],
+	[SG.Btn(
+		"U1M+",
+		**BTNM1UP,
+	),
+	SG.Btn(
+		"U1S+",
+		**BTNS1UP
+	)],
 ]
 
 TASK2COLUMN = [
@@ -514,20 +503,10 @@ layout = [
 		SG.Col(MAINBTNSCOLUMN),
 	],
 	[
-		SG.Col(CYCLESCOLUMN),
-		SG.Col(STARTSCOLUMN),
-	],
-	[
 		SG.Col(TASK1COLUMN),
 		SG.Col(TASK2COLUMN),
 		SG.Col(TASK3COLUMN),
 		SG.Col(TASK4COLUMN),
-	],
-	[
-		SG.Col(ADJUPTIMEMINSCOLUMN),
-		SG.Col(ADJUPTIMESECSCOLUMN),
-		SG.Col(ADJDOWNTIMEMINSCOLUMN),
-		SG.Col(ADJDOWNTIMESECSCOLUMN),
 	],
 ]
 
@@ -542,8 +521,6 @@ def nowStr(dtObj=DT.now()):
 def updateTime():
 	# update timer and cycleCount
 	window.Element("_timer_").Update(value=("{:02d}:{:02d}".format(ticks // myFactor // 60, ticks // myFactor % 60)))
-	window.Element("_cycleCount_").Update(value=("{:04d}".format(cycleCount)))
-	window.Element("_startCount_").Update(value=("{:04d}".format(currentData[STARTCOUNT])))
 	window.Element("_task1count_").Update(value=("{:03d}".format(currentData[TASK1COUNT])))
 	window.Element("_task2count_").Update(value=("{:03d}".format(currentData[TASK2COUNT])))
 	window.Element("_task3count_").Update(value=("{:03d}".format(currentData[TASK3COUNT])))
@@ -554,7 +531,7 @@ def updateTime():
 	window.Element("_upSec_").Update(value=f"{currentData[UPSEC]:d}")
 
 
-def updateWindowBackground(COLOR):
+def updateTimerBackground(COLOR):
 	# put change background code
 	window.Element("_timer_").Update(background_color=COLOR)
 
@@ -568,37 +545,30 @@ def doStopButton():
 
 
 def zeroStuff(modeIn):
-	global ticks, cycleCount, directionUp, currentData
+	global ticks, directionUp, currentData
 	ticks = 0
 	directionUp = True
 	updateTime()
-	updateWindowBackground(TIMEROFFBKGNDCOLOR)
+	updateTimerBackground(TIMEROFFBKGNDCOLOR)
 	if modeIn == MODE_NORMAL:
-		cycleCount = 0
 		currentData = defaults()
 		pickleIt(currentData[FILENAME], currentData)
-	if modeIn == MODE_START:
-		cycleCount = 0
 	updateTime()
 
 
 def startTimer():
 	global timerRunning, currentData
 	timerRunning = True
-	updateWindowBackground(TIMERUPBKGNDCOLOR)
+	updateTimerBackground(TIMERUPBKGNDCOLOR)
 	doStopButton()
-	currentData[STARTCOUNT] += 1
 	updateTime()
 
 
 def stopTimer(stopMode):
-	global timerRunning, cycleCount
+	global timerRunning
 	timerRunning = False
-	updateWindowBackground(TIMEROFFBKGNDCOLOR)
+	updateTimerBackground(TIMEROFFBKGNDCOLOR)
 	doStartButton()
-	if stopMode == STOPMODE_CYCLE:
-		cycleCount += 1
-		cycleCount = cycleCount % 10000
 	updateTime()
 
 
@@ -715,42 +685,42 @@ while True:  # Event Loop
 		cycleCount = 0
 		stopTimer(STOPMODE_BUTTON)
 		# fold here ⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣
-	elif event == "dnMin+":
+	elif event == "DM+":
 		# fold here ⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥
 		currentData[DOWNMIN] += 1
 		updateTime()
 		# fold here ⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣
-	elif event == "dnMin-":
+	elif event == "DM-":
 		# fold here ⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥
 		currentData[DOWNMIN] -= 1
 		updateTime()
 		# fold here ⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣
-	elif event == "dnSec+":
+	elif event == "DS+":
 		# fold here ⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥
 		currentData[DOWNSEC] += 1
 		updateTime()
 		# fold here ⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣
-	elif event == "downSec-":
+	elif event == "DS-":
 		# fold here ⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥
 		currentData[DOWNSEC] -= 1
 		updateTime()
 		# fold here ⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣
-	elif event == "upMin+":
+	elif event == "UM+":
 		# fold here ⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥
 		currentData[UPMIN] += 1
 		updateTime()
 		# fold here ⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣
-	elif event == "upMin-":
+	elif event == "UM-":
 		# fold here ⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥
 		currentData[UPMIN] -= 1
 		updateTime()
 		# fold here ⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣
-	elif event == "upSec+":
+	elif event == "US+":
 		# fold here ⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥
 		currentData[UPSEC] += 1
 		updateTime()
 		# fold here ⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣⥣
-	elif event == "upSec-":
+	elif event == "US-":
 		# fold here ⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥
 		currentData[UPSEC] -= 1
 		updateTime()
@@ -775,7 +745,7 @@ while True:  # Event Loop
 		# print(ticks)
 		updateTime()
 		if directionUp & (ticks >= upTicks):
-			updateWindowBackground(TIMERDOWNBKGNDCOLOR)
+			updateTimerBackground(TIMERDOWNBKGNDCOLOR)
 			directionUp = False
 			ticks = downTicks
 		if directionUp is False and ticks <= myFactor:
@@ -783,13 +753,13 @@ while True:  # Event Loop
 				ticks = 0
 				stopTimer(STOPMODE_CYCLE)
 			else:
-				updateWindowBackground(TIMERUPBKGNDCOLOR)
+				updateTimerBackground(TIMERUPBKGNDCOLOR)
 				directionUp = True
 				cycleCount += 1
 				ticks = 0
 	else:
 		doStartButton()
-		updateWindowBackground(TIMEROFFBKGNDCOLOR)
+		updateTimerBackground(TIMEROFFBKGNDCOLOR)
 
 
 # #*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#
