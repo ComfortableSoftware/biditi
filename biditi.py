@@ -1,5 +1,5 @@
 #!/usr/bin/python
-# v01.01.0000
+# v01.01.0001
 
 
 # #*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#
@@ -49,7 +49,6 @@ BTNTASKUPTEXTCOLOR = MAINUPTEXTCOLOR
 BTNZEROCOLOR = "#440022"
 BTNZEROTEXTCOLOR = "#666600"
 
-COUNTERCOLOR = "#009999"
 COUNTERFONTSZ = 20
 
 FONT = "Source Code Pro"
@@ -69,13 +68,12 @@ SPACEFONTSZ = 10
 STOPMODE_BUTTON = "STOPMODE_BUTTON"
 STOPMODE_CYCLE = "STOPMODE_CYCLE"
 TASKCOUNTERCOLOR = "#448811"
-TIMERTEXTCOLOR = "#2F0004"
-TIMERDOWNBKGNDCOLOR = "#880000"
+TIMERDOWNBKGNDCOLOR = MAINDOWNCOLOR
+TIMERDOWNTEXTCOLOR = MAINDOWNTEXTCOLOR
 TIMERFONTSZ = 60
 TIMEROFFBKGNDCOLOR = "#000000"
-TIMERUPBKGNDCOLOR = "#008800"
+TIMERUPBKGNDCOLOR = MAINUPCOLOR
 TIMERUPTEXTCOLOR = MAINUPTEXTCOLOR
-TIMERDOWNTEXTCOLOR = MAINDOWNTEXTCOLOR
 
 
 # #*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#
@@ -628,7 +626,7 @@ CLMTASK4 = [
 CLMTIMER = [
 	[SG.Text(
 		"timer", size=(5, 1),
-		text_color=TIMERTEXTCOLOR,
+		text_color=TIMERUPTEXTCOLOR,
 		font=(FONT, TIMERFONTSZ),
 		justification="center",
 		key="_timer_",
