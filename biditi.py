@@ -68,10 +68,12 @@ SPACEFONTSZ = 10
 STOPMODE_BUTTON = "STOPMODE_BUTTON"
 STOPMODE_CYCLE = "STOPMODE_CYCLE"
 TASKCOUNTERCOLOR = "#448811"
+
 TIMERDOWNBKGNDCOLOR = MAINDOWNCOLOR
 TIMERDOWNTEXTCOLOR = MAINDOWNTEXTCOLOR
 TIMERFONTSZ = 60
 TIMEROFFBKGNDCOLOR = "#000000"
+TIMEROFFTXTCOLOR = "#444422"
 TIMERUPBKGNDCOLOR = MAINUPCOLOR
 TIMERUPTEXTCOLOR = MAINUPTEXTCOLOR
 
@@ -308,11 +310,34 @@ TEXTTIMERDOWN = {
 	"background_color": TIMERDOWNBKGNDCOLOR,
 }
 
-TEXTTIMERUP = {
+TEXTTIMERDOWNPARMS = {
+	"text_color": TIMERDOWNTEXTCOLOR,
+	"background_color": TIMERDOWNBKGNDCOLOR,
+}
+
+TEXTTIMEROFF = {
 	"size": (5, 1),
-	"text_color": TIMERUPTEXTCOLOR,
+	"text_color": TIMEROFFTXTCOLOR,
 	"font": (FONT, SETTIMERFONTSZ),
 	"justification": "center",
+	"background_color": TIMEROFFBKGNDCOLOR,
+}
+
+TEXTTIMEROFFPARMS = {
+	"text_color": TIMEROFFTXTCOLOR,
+	"background_color": TIMEROFFBKGNDCOLOR,
+}
+
+TEXTTIMERUP = {
+	"size": (5, 1),
+	"font": (FONT, SETTIMERFONTSZ),
+	"justification": "center",
+	"text_color": TIMERUPTEXTCOLOR,
+	"background_color": TIMERUPBKGNDCOLOR,
+}
+
+TEXTTIMERUPPARMS = {
+	"text_color": TIMERUPTEXTCOLOR,
 	"background_color": TIMERUPBKGNDCOLOR,
 }
 
@@ -626,7 +651,8 @@ CLMTASK4 = [
 
 CLMTIMER = [
 	[SG.Text(
-		"timer", size=(5, 1),
+		"timer",
+		size=(5, 1),
 		text_color=TIMERUPTEXTCOLOR,
 		font=(FONT, TIMERFONTSZ),
 		justification="center",
@@ -732,12 +758,30 @@ def doStopButton():
 	window.find_element("Go/Stop").Update(**BTNSTOP)
 
 
+def setTimerDown():
+	# fold here ⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱
+	window.Element("_timer_").update(**TEXTTIMERDOWNPARMS)
+	# fold here ⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰
+
+
+def setTimerOff():
+	# fold here ⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱
+	window.Element("_timer_").update(**TEXTTIMEROFFPARMS)
+	# fold here ⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰
+
+
+def setTimerUp():
+	# fold here ⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱
+	window.Element("_timer_").update(**TEXTTIMERUPPARMS)
+	# fold here ⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰
+
+
 def zeroStuff(modeIn):
 	global ticks, directionUp, currentData
 	ticks = 0
 	directionUp = True
 	updateTime()
-	updateTimerBackground(TIMEROFFBKGNDCOLOR)
+	setTimerOff()
 	if modeIn == MODE_NORMAL:
 		currentData = defaults()
 		pickleIt(currentData[FILENAME], currentData)
@@ -747,14 +791,14 @@ def zeroStuff(modeIn):
 def startTimer():
 	global timerRunning, currentData
 	timerRunning = True
-	updateTimerBackground(TIMERUPBKGNDCOLOR)
+	setTimerUp()
 	updateTime()
 
 
 def stopTimer(stopMode):
 	global timerRunning
 	timerRunning = False
-	updateTimerBackground(TIMEROFFBKGNDCOLOR)
+	setTimerOff()
 	updateTime()
 
 
@@ -791,6 +835,8 @@ while True:  # Event Loop
 # event |{event}|
 # values |{values}|
 # """)
+	oldDirectionUp = directionUp
+	oldTimerRunning = timerRunning
 	if event is None or event == "Quit":  # X or quit button clicked
 		# fold here ⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥⥥
 		addEvent(event)
@@ -1046,6 +1092,9 @@ while True:  # Event Loop
 
 	upTicks = int(currentData[UPSEC] * myFactor)
 	downTicks = int(currentData[DOWNSEC] * myFactor)
+	if timerRunning is True and oldTimerRunning is False:
+		setTimerUp()
+		oldTimerRunning = True
 
 	if event != "__TIMEOUT__":
 		# currentData[AUTOGO1] = values[DEFAULTSVALUESNDX[AUTOGO1]]
@@ -1062,7 +1111,7 @@ while True:  # Event Loop
 		# print(ticks)
 		updateTime()
 		if directionUp & (ticks >= upTicks):
-			updateTimerBackground(TIMERDOWNBKGNDCOLOR)
+			setTimerDown()
 			directionUp = False
 			ticks = downTicks
 		if directionUp is False and ticks <= myFactor:
