@@ -5,6 +5,25 @@ Example of (almost) all widgets, that you can use in PySimpleGUI.
 
 import PySimpleGUI as sg
 
+Spin(
+	values,
+	initial_value=None,
+	disabled=False,
+	change_submits=False,
+	enable_events=False,
+	readonly=False,
+	size=(None, None),
+	auto_size_text=None,
+	font=None,
+	background_color=None,
+	text_color=None,
+	key=None,
+	k=None,
+	pad=None,
+	tooltip=None,
+	visible=True,
+	metadata=None
+)
 
 sg.theme('Dark Red')
 # sg.set_options(text_color='black', background_color='#A6B2BE', text_element_background_color='#A6B2BE')
