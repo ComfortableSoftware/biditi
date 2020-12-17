@@ -1,5 +1,4 @@
 #!/usr/bin/python
-# v01.01.0001
 
 
 # #*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#
@@ -15,20 +14,21 @@ import PySimpleGUI as SG
 # setting constants
 # #*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#
 
+BLACK = "#000000"
+GRAY8 = "#888888"
+GRAYC = "#CCCCCC"
+GREEN2 = "#448811"
 MAINDOWNCOLOR = "#880000"
 MAINDOWNTEXTCOLOR = "#FF0000"
 MAINUPCOLOR = "#008800"
 MAINUPTEXTCOLOR = "#00FF00"
-GRAY8 = "#888888"
-GRAYC = "#CCCCCC"
+ORANGE = "#FF7F00"
 PURP440022 = "#440022"
 PURP660044 = "#660044"
-YELLOW666600 = "#666600"
-GREEN2 = "#448811"
-BLACK = "#000000"
-ORANGE = "#FF7F00"
-YELLOW2 = "#444422"
 TEAL1 = "#00FF7F"
+YELLOW2 = "#444422"
+YELLOW666600 = "#666600"
+
 
 AIR = "AIR"
 DYNAVAP = "DYNAVAP"
@@ -36,6 +36,7 @@ FIREFLY = "FIREFLY"
 Q = "Q"
 QOMO = "QOMO"
 VARIOUS = "VARIOUS"
+
 
 TASKLIST = [
 	AIR,
@@ -45,6 +46,7 @@ TASKLIST = [
 	QOMO,
 	VARIOUS,
 ]
+
 
 ADJBTNDOWNCOLOR = MAINDOWNCOLOR
 ADJBTNDOWNTEXTCOLOR = MAINDOWNTEXTCOLOR
@@ -65,6 +67,9 @@ BTNUPCOLOR = MAINUPCOLOR
 BTNUPTEXTCOLOR = MAINUPTEXTCOLOR
 BTNZEROCOLOR = PURP440022
 BTNZEROTEXTCOLOR = YELLOW666600
+COLONTIME = 5  # setting this to MYFACTOR should yield 1hz colon blink
+COLONONCOLOR = "#00FF00"
+COLONOFFCOLOR = "#FF0000"
 LASTFILENAME = "biditi.last"
 MODE_NORMAL = "MODE_NORMAL"
 MODE_RESTART = "MODE_RESTART"
@@ -141,8 +146,8 @@ if CWD.find("_android") > -1:
 	SG.ChangeLookAndFeel("DarkPurple6")
 	SPACEFONTSZ = 10
 	SPINFONTSZ = 9
-	TIMERFONTSZ = 85
-	UPDOWNTIMEFONTSZ = 30
+	TIMERFONTSZ = 84
+	UPDOWNTIMEFONTSZ = 34
 	UPIMAGE = UP128
 elif CWD.find("_DEV") > -1:
 	ADJTIMEBTNFONTSZ = PCADJTIMEBTNFONTSZ
@@ -247,10 +252,13 @@ DEFAULTSVALUESNDX = {
 	TASK4NAME: 3,
 }
 
+
 # #*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#
 # get a few things done that will be used by functions, but were unneeded by the init above
 # #*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#
 
+colonStatus = True
+colonTicks = 0
 currentData = defaults()
 directionUp = True
 myFactor = MYFACTOR
@@ -422,6 +430,20 @@ TEXTADJTIMEUP = {
 	"font": (FONT, ADJTIMEFONTSZ),
 	"justification": "center",
 	"background_color": ADJTIMEUPBKGNDCOLOR,
+}
+
+TEXTCOLONOFF = {
+	"size": (1, 1),
+	"font": (FONT, SETTIMERFONTSZ),
+	"justification": "center",
+	"text_color": COLONOFFCOLOR,
+}
+
+TEXTCOLONON = {
+	"size": (1, 1),
+	"font": (FONT, SETTIMERFONTSZ),
+	"justification": "center",
+	"text_color": COLONONCOLOR,
 }
 
 TEXTTASKCOUNT = {
@@ -797,12 +819,27 @@ CLMTASK4 = [
 CLMTIMER = [
 	[
 		SG.Text(
-			"timer",
-			size=(5, 1),
+			"00",
+			size=(2, 1),
 			text_color=TIMERUPTEXTCOLOR,
 			font=(FONT, TIMERFONTSZ),
+			justification="right",
+			key="_timerM_",
+		),
+		SG.Text(
+			":",
+			size=(1,1),
+			font=(FONT, TIMERFONTSZ),
 			justification="center",
-			key="_timer_",
+			key="_colon_",
+		),
+		SG.Text(
+			"00",
+			size=(2, 1),
+			text_color=TIMERUPTEXTCOLOR,
+			font=(FONT, TIMERFONTSZ),
+			justification="left",
+			key="_timerS_",
 		),
 	],
 ]
@@ -852,11 +889,17 @@ def nowStr(dtObj=DT.now()):
 	return dtObj.strftime("%Y%m%d.%H%M%S")
 
 
+def setTimer(timerSTR):
+	timerSplitList = timerSTR.split(":")
+	window.Element("_timerM_").Update(value=timerSplitList[0])
+	window.Element("_timerS_").Update(value=timerSplitList[1])
+
+
 def updateTime(isUp):
 	# update timer and cycleCount
 	tempTimerVAL = ticks // myFactor
 	timerSTR = makeTime(tempTimerVAL)
-	window.Element("_timer_").Update(value=timerSTR)
+	setTimer(timerSTR)
 	window.Element("_task1count_").Update(value=(f"{currentData[TASK1COUNT]:03d}"))
 	window.Element("_task2count_").Update(value=(f"{currentData[TASK2COUNT]:03d}"))
 	window.Element("_task3count_").Update(value=(f"{currentData[TASK3COUNT]:03d}"))
@@ -864,9 +907,9 @@ def updateTime(isUp):
 
 	if isUp is True:
 		window.Element("_upTime_").Update(value=(makeTime(currentData[UPSEC] - tempTimerVAL)))
-		window.Element("_downTime_").Update(value=(makeTime(currentData[DOWNSEC])))
+		window.Element("_downTime_").Update(value=(makeTime(0)))
 	elif isUp is False:
-		window.Element("_upTime_").Update(value=(makeTime(currentData[UPSEC])))
+		window.Element("_upTime_").Update(value=(makeTime(0)))
 		window.Element("_downTime_").Update(value=(makeTime(currentData[DOWNSEC] - tempTimerVAL)))
 	elif isUp is None:
 		window.Element("_upTime_").Update(value=(makeTime(0)))
@@ -894,65 +937,78 @@ def updateTime(isUp):
 
 
 def incCount(inCount):
+	# fold here ⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱
 	TI = inCount + 1
 	if TI > 999:
 		TI = 999
 	return TI
+	# fold here ⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰
 
 
 def decCount(inCount):
+	# fold here ⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱
 	TI = inCount - 1
 	if TI < 0:
 		TI = 0
 	return TI
+	# fold here ⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰
 
 
 def incTime(inSeconds, increment):
+	# fold here ⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱
 	TInSeconds = inSeconds + increment
 	TMin = TInSeconds // 60
 	# TSec = TInSeconds % 60
 	if TMin > 99:
 		TInSeconds = (99 * 60) + 59
 	return TInSeconds
+	# fold here ⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰
 
 
 def decTime(inSeconds, increment):
+	# fold here ⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱
 	TInSeconds = inSeconds - increment
 	if TInSeconds < 0:
 		TInSeconds = 0
 	return TInSeconds
+	# fold here ⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰
 
 
 def updateTimerBackground(COLOR):
+	# fold here ⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱
 	# put change background code
-	window.Element("_timer_").Update(background_color=COLOR)
+	window.Element("_timerM_").Update(background_color=COLOR)
+	window.Element("_timerS_").Update(background_color=COLOR)
+	window.Element("_colon_").Update(background_color=COLOR)
+	# fold here ⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰
 
 
 def setTimerDown():
 	# fold here ⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱
-	window.Element("_timer_").update(**TEXTTIMERDOWNPARMS)
-
-
+	window.Element("_timerM_").Update(**TEXTTIMERDOWNPARMS)
+	window.Element("_timerS_").Update(**TEXTTIMERDOWNPARMS)
+	window.Element("_colon_").Update(background_color=TIMERDOWNBKGNDCOLOR)
 # fold here ⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰
 
 
 def setTimerOff():
 	# fold here ⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱
-	window.Element("_timer_").update(**TEXTTIMEROFFPARMS)
-
-
+	window.Element("_timerM_").Update(**TEXTTIMEROFFPARMS)
+	window.Element("_timerS_").Update(**TEXTTIMEROFFPARMS)
+	window.Element("_colon_").Update(background_color=TIMEROFFBKGNDCOLOR)
 # fold here ⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰
 
 
 def setTimerUp():
 	# fold here ⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱
-	window.Element("_timer_").update(**TEXTTIMERUPPARMS)
-
-
+	window.Element("_timerM_").Update(**TEXTTIMERUPPARMS)
+	window.Element("_timerS_").Update(**TEXTTIMERUPPARMS)
+	window.Element("_colon_").Update(background_color=TIMERUPBKGNDCOLOR)
 # fold here ⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰
 
 
 def zeroStuff(modeIn):
+	# fold here ⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱
 	global ticks, directionUp, currentData
 	ticks = 0
 	directionUp = True
@@ -962,26 +1018,33 @@ def zeroStuff(modeIn):
 		currentData = defaults()
 		pickleIt(currentData[FILENAME], currentData)
 	updateTime(None)
+	# fold here ⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰
 
 
 def startTimer():
+	# fold here ⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱
 	global timerRunning, currentData
 	timerRunning = True
 	setTimerUp()
 	updateTime(True)
+	# fold here ⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰
 
 
 def stopTimer(stopMode):
+	# fold here ⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱
 	global timerRunning
 	timerRunning = False
 	setTimerOff()
 	updateTime(None)
+	# fold here ⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰
 
 
 def getValues(inValues):
+	# fold here ⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱
 	global currentData
 	for key, item in DEFAULTSVALUESNDX.items():
 		currentData[key] = inValues[item]
+	# fold here ⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰
 
 
 def addEvent(event2add):
@@ -998,9 +1061,20 @@ def addEvent(event2add):
 		FDOut.writelines(outStr)
 		FDOut.flush()
 		FDOut.close()
+	# fold here ⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰
 
 
-# fold here ⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰
+def setColonColor():
+	# fold here ⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱
+	global colonTicks, colonStatus
+	colonTicks += 1
+	if colonTicks % COLONTIME == 0:
+		colonStatus = not colonStatus
+		if colonStatus is True:
+			window.Element("_colon_").Update(text_color=COLONONCOLOR)
+		else:
+			window.Element("_colon_").Update(text_color=COLONOFFCOLOR)
+	# fold here ⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰⟰
 
 
 getData(currentData[FILENAME])
@@ -1268,6 +1342,7 @@ while True:  # Event Loop
 
 	upTicks = int(currentData[UPSEC] * myFactor)
 	downTicks = int(currentData[DOWNSEC] * myFactor)
+	setColonColor()
 	if timerRunning is True and oldTimerRunning is False:
 		setTimerUp()
 		oldTimerRunning = True
