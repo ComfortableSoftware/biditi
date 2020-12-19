@@ -499,6 +499,18 @@ TEXTSPACE1 = {
 	"justification": "center",
 }
 
+TEXTDOWNLABEL = {
+	"size": (3, 1),
+	"text_color": TIMERDOWNTEXTCOLOR,
+	"background_color": TIMERDOWNBKGNDCOLOR,
+}
+
+TEXTUPLABEL = {
+	"size": (3, 1),
+	"text_color": TIMERUPTEXTCOLOR,
+	"background_color": TIMERUPBKGNDCOLOR,
+}
+
 TEXTDOWNTIME = {
 	"size": (5, 1),
 	"font": (FONT, UPDOWNTIMEFONTSZ),
@@ -863,6 +875,16 @@ layout = [
 					SG.Btn(
 						key="Quit",
 						**BTNQUIT,
+					),
+				],
+				[
+					SG.Text(
+						"UP",
+						**TEXTUPLABEL,
+					),
+					SG.Text(
+						"DN",
+						**TEXTDOWNLABEL,
 					),
 				],
 				[
