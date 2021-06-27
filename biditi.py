@@ -189,7 +189,7 @@ PCZEROALL = ZEROALL64
 
 
 CWD = PATH.abspath(".")
-if CWD.find("_android") > -1:
+if CWD.find("wsource") > -1:
 	# fold here ⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱⟱
 	ADJTIMEBTNFONTSZ = 6
 	ADJTIMEDOWNIMAGE = DN64
