@@ -116,11 +116,11 @@ if CWD.find("_android") > -1:
 	SG.ChangeLookAndFeel("DarkPurple6")
 elif CWD.find("_DEV") > -1:
 	SG.ChangeLookAndFeel("DarkGreen5")
-	CONFIGDIRECTORY = "/home/will/.config/biditi_DEV/"
+	CONFIGDIRECTORY = "/home/liam/.config/biditi_DEV/"
 	UPIMAGE = UP16
 	DOWNIMAGE = DN16
 else:
-	CONFIGDIRECTORY = "/home/will/.config/biditi/"
+	CONFIGDIRECTORY = "/home/liam/.config/biditi/"
 	SG.ChangeLookAndFeel("DarkPurple6")
 	UPIMAGE = UP16
 	DOWNIMAGE = DN16
