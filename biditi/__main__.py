@@ -302,22 +302,22 @@ DEFAULTS = [
   (TASK1BOWLSCOUNT, 0,),
   (TASK1COUNT, 0,),
   (TASK1DOWNTIMER, 7,),
-  (TASK1NAME, Q,),
+  (TASK1NAME, TASK_01,),
   (TASK1UPTIMER, 20,),
   (TASK2BOWLSCOUNT, 0,),
   (TASK2COUNT, 0,),
   (TASK2DOWNTIMER, 7,),
-  (TASK2NAME, QTZBANGER,),
+  (TASK2NAME, TASK_02,),
   (TASK2UPTIMER, 20,),
   (TASK3BOWLSCOUNT, 0,),
   (TASK3COUNT, 0,),
   (TASK3DOWNTIMER, 7,),
-  (TASK3NAME, FIREFLY,),
+  (TASK3NAME, TASK_04,),
   (TASK3UPTIMER, 20,),
   (TASK4BOWLSCOUNT, 0,),
   (TASK4COUNT, 0,),
   (TASK4DOWNTIMER, 7,),
-  (TASK4NAME, PEAK,),
+  (TASK4NAME, TASK_05,),
   (TASK4UPTIMER, 25,),
   (TEXTNAME, "biditi.txt",),
   (UPSEC, 20,),
@@ -356,40 +356,40 @@ timerRunning = False
 currentData = None
 
 
-def pickleIt(fileName, dataToPickle):
-  # fold here ⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋
-  with open(CONFIGDIRECTORY + fileName, 'wb') as FD_OUT_:
-    PD.dump(dataToPickle, FD_OUT_)
-    FD_OUT_.flush()
-    FD_OUT_.close()
-  with open(CONFIGDIRECTORY + LASTFILENAME, "tw") as FD_OUT_:
-    FD_OUT_.writelines(fileName)
-    FD_OUT_.flush()
-    FD_OUT_.close()
-# fold here ⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊
+#def pickleIt(fileName, dataToPickle):
+#  # fold here ⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋
+#  with open(CONFIGDIRECTORY + fileName, 'wb') as FD_OUT_:
+#    PD.dump(dataToPickle, FD_OUT_)
+#    FD_OUT_.flush()
+#    FD_OUT_.close()
+#  with open(CONFIGDIRECTORY + LASTFILENAME, "tw") as FD_OUT_:
+#    FD_OUT_.writelines(fileName)
+#    FD_OUT_.flush()
+#    FD_OUT_.close()
+## fold here ⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊
+#
+#
+#def unPickleIt(fileName):
+#  # fold here ⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋
+#  with open(CONFIGDIRECTORY + fileName, "rb") as FD_IN_:
+#    dataToRTN_ = PD.load(FD_IN_)
+#  return dataToRTN_
+## fold here ⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊
 
 
-def unPickleIt(fileName):
-  # fold here ⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋
-  with open(CONFIGDIRECTORY + fileName, "rb") as FD_IN_:
-    dataToRTN_ = PD.load(FD_IN_)
-  return dataToRTN_
-# fold here ⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊
-
-
-def getData(fileName):
-  # fold here ⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋
-  global currentData
-  if PATH.exists(CONFIGDIRECTORY + fileName):
-    try:
-      currentData = unPickleIt(fileName)
-    except PD.UnpicklingError:
-      currentData = defaults()
-      pickleIt(fileName, currentData)
-  else:
-    currentData = defaults()
-    pickleIt(fileName, currentData)
-# fold here ⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊
+#def getData(fileName):
+#  # fold here ⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋
+#  global currentData
+#  if PATH.exists(CONFIGDIRECTORY + fileName):
+#    try:
+#      currentData = unPickleIt(fileName)
+#    except PD.UnpicklingError:
+#      currentData = defaults()
+#      pickleIt(fileName, currentData)
+#  else:
+#    currentData = defaults()
+#    pickleIt(fileName, currentData)
+## fold here ⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊
 
 
 def makeTime(secondsIn):
@@ -400,54 +400,60 @@ def makeTime(secondsIn):
 # fold here ⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊
 
 
-def myInit():
-  global currentData
-  # fold here ⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋
-  if PATH.exists(CONFIGDIRECTORY + LASTFILENAME):
-    # print(f"lastfilename {LASTFILENAME} being opened\n")
-    FD_IN_ = open(CONFIGDIRECTORY + LASTFILENAME, "tr")
-    filename = FD_IN_.readline()
-    FD_IN_.close()
-    if PATH.exists(CONFIGDIRECTORY + filename):
-      getData(filename)
-    else:
-      currentData = defaults()
-      pickleIt(LASTFILENAME, currentData)
-  else:
-    currentData = defaults()
-    pickleIt(LASTFILENAME, currentData)
-  # fold here ⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊
-
-
-myInit()
+#def myInit():
+#  global currentData
+#  # fold here ⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋⤋
+#  if PATH.exists(CONFIGDIRECTORY + LASTFILENAME):
+#    # print(f"lastfilename {LASTFILENAME} being opened\n")
+#    FD_IN_ = open(CONFIGDIRECTORY + LASTFILENAME, "tr")
+#    filename = FD_IN_.readline()
+#    FD_IN_.close()
+#    if PATH.exists(CONFIGDIRECTORY + filename):
+#      getData(filename)
+#    else:
+#      currentData = defaults()
+#      pickleIt(LASTFILENAME, currentData)
+#  else:
+#    currentData = defaults()
+#    pickleIt(LASTFILENAME, currentData)
+#  # fold here ⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊
+#
+#
+#myInit()
 
 # #*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#
 # buttons defined here, don't forget to ** double unpack these when used
 # #*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#
 
 ADJBTNDOWN = {
-  "button_text": "",
-  "font": (FONT, ADJTIMEBTNFONTSZ),
-  "image_data": ADJTIMEDOWNIMAGE,
-  "focus": True,
-  "button_color": (ADJBTNDOWNTEXTCOLOR, ADJBTNDOWNCOLOR),
-}
+# 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋
+    "button_text": "",
+    "font": (FONT, ADJTIMEBTNFONTSZ),
+    "image_data": ADJTIMEDOWNIMAGE,
+    "focus": True,
+    "button_color": (ADJBTNDOWNTEXTCOLOR, ADJBTNDOWNCOLOR),
+  }
+# ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0
 
 ADJBTNUP = {
-  "button_text": "",
-  "image_data": ADJTIMEUPIMAGE,
-  "font": (FONT, ADJTIMEBTNFONTSZ),
-  "focus": True,
-  "button_color": (ADJBTNUPTEXTCOLOR, ADJBTNUPCOLOR),
-}
+# 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋
+    "button_text": "",
+    "image_data": ADJTIMEUPIMAGE,
+    "font": (FONT, ADJTIMEBTNFONTSZ),
+    "focus": True,
+    "button_color": (ADJBTNUPTEXTCOLOR, ADJBTNUPCOLOR),
+  }
+# ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0
 
 BTNBOWLSDOWN = {
-  "button_color": (BTNDOWNTEXTCOLOR, BTNDOWNCOLOR),
-  "button_text": "",
-  "focus": True,
-  "font": (FONT, BOWLSFONTSZ),
-  "image_data": BOWLSDOWN,
-}
+# 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋ 0⤋
+    "button_color": (BTNDOWNTEXTCOLOR, BTNDOWNCOLOR),
+    "button_text": "",
+    "focus": True,
+    "font": (FONT, BOWLSFONTSZ),
+    "image_data": BOWLSDOWN,
+  }
+# ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0 ⤊0
 
 BTNBOWLSUP = {
   "button_color": (BTNUPTEXTCOLOR, BTNUPCOLOR),
@@ -1625,7 +1631,7 @@ def doEvents(event):
     # fold here ⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊
 # fold here ⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊⤊
 
-getData(currentData[FILENAME])
+#getData(currentData[FILENAME])
 updateAll()
 stopTimer()
 while True:  # Event Loop
