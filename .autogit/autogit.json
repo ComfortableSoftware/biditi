@@ -1,0 +1,9 @@
+{
+  "runOnStart": true,
+  "updateInterval": 300,
+  "logging": false,
+  "silent": true,
+  "commitMessage": "{ts.utc} Auto Git Commit",
+  "locale": "en-US",
+  "timeZone": "MST7MDT"
+}
